@@ -1,4 +1,4 @@
-#Purpose: Reading from Time-of-Flight sensors
+#Purpose: Reading from Time-of-Flight sensors & sending data over UART to stm32
 
 import serial
 import time
