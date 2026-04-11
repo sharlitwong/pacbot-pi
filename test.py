@@ -4,6 +4,17 @@ import time
 port = "/dev/serial0"
 baud = 9600
 
+import struct
+
+def send_motors(ser, front, right, back, left):
+    # scale from -1000:1000 to -32767:32767
+    def scale(val):
+        return int(val * 32767 / 1000)
+
+    data = struct.pack('>hhhh', scale(front), scale(right), scale(back), scale(left))
+    ser.write(data)
+
+
 try:
     ser = serial.Serial(port, baud, timeout=1)
     # Allow the port to initialize
@@ -12,8 +23,13 @@ try:
         if ser.is_open:
             # Write the letter 's' as bytes
                 #which direction/speed
-                ser.write(b'\x66\x01\xF4\x00\x00\x00\x00\x00') 
+                #66 is front; 62 is back; 6C is left; 72 is right
+             
+                send_motors(ser, 0, 1000, 0, -1000) # forward: right clockwise, left counterclockwise
+                # ser.write(b'\x73\x01\xF4\x00\x00\x00\x00\x00') 
                 time.sleep(0.1)
+                # ser.write(b'\x73\x01\xF4\x00\x00\x00\x00\x00') 
+                # time.sleep(0.1)
 
                 # ser.write(b'\0x01')
                 # time.sleep(0.1)
