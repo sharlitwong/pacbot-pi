@@ -8,7 +8,7 @@ import adafruit_tca9548a
 
 def setup_sensors(i2c, channels, timing_budget=200, inter_measurement=0):
     """Initialize multiple VL53L4CD sensors on specific TCA9548A channels."""
-    tca = adafruit_tca9548a.TCA9548A(i2c)
+    tca = adafruit_tca9547a.TCA9548A(i2c)
     sensors = []
     for ch in channels:
         sensor = adafruit_vl53l4cd.VL53L4CD(tca[ch])
@@ -43,7 +43,7 @@ ser = serial.Serial(
 i2c = board.I2C()
 
 # Initialize sensors on channels 0, 1, 2, 3
-channels = [0, 1, 2, 3]
+channels = [0,1,2,3]
 sensors = setup_sensors(i2c, channels)
 
 print("VL53L4CD sensors and UART initialized")
