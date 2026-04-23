@@ -21,8 +21,7 @@ import adafruit_tca9548a
 #IMU used: DOF BNO 0055
 def init_imu():
     i2c = busio.I2C(board.SCL, board.SDA, frequency=400000)
-    tca = adafruit_tca9548a.TCA9548A(i2c)   # mux at 0x70
-    bno = BNO055_I2C(tca[0])                # channel 0
+    bno = BNO055_I2C(i2c)                # channel 0
     time.sleep(1)
     return i2c, bno
 
@@ -76,7 +75,7 @@ class PID:
 class test_mov():
     PORT = "/dev/serial0"
     BAUD = 9600
-    KP, KI, KD = 9.0, 0.5, 0.0
+    KP, KI, KD = 15, 0, 0.0
     MAX_CORRECTION = 150
 
     def __init__(self, m1_s=761,m2_s=800,m3_s=800,m4_s=800):
@@ -124,7 +123,7 @@ class test_mov():
             yaw = self.target_yaw   # fall back gracefully
 
         error = angle_error(self.target_yaw, yaw)
-        DEADBAND = 2.0  # degrees — ignore tiny errors
+        DEADBAND = 0.1  # degrees — ignore tiny errors
         if abs(error) < DEADBAND:
             correction = 0.0
             self.pid._integral = 0  # drain windup when settled
@@ -145,7 +144,7 @@ class test_mov():
             right += correction #changed from -=
         elif front != 0 and back != 0:
             front += correction
-            back  -= correction
+            back  += correction
         print("front: %.1f, back: %.1f, right: %.1f, left: %.1f" % (front, back, right, left))
 
         self.send_motors(left, front, right, back) #used to be -1*right
@@ -157,7 +156,6 @@ class test_mov():
         if hasattr(self, '_move_thread') and self._move_thread is not None:
             self._move_thread.join(timeout=0.2)  # wait for old thread to die
         
-        self.target_yaw = get_yaw(self.bno)
         self.pid.reset()
         self.use_pid = True
 
@@ -172,88 +170,115 @@ class test_mov():
             time.sleep(0.05)
 
     #left front right back
-    def take_command(self):
+    def take_command(self,command2):
         print("input command")
-        in2=input()
-        command_components=in2.split()
+        command_components=command2.split()
         command=command_components[0]
-        if(command_components[0] in self.command_list):
-            if(command == "c"):
-                self.target_yaw = command_components[1]
-                self.pid.reset()
-            elif(command=="s1"):
-                try:
-                    self.m1_speed=int(command_components[1])
-                except Exception as e:
-                    print(e)
-                pass
-            elif(command=="s2"):
-                try:
-                    self.m2_speed=int(command_components[1])
-                except Exception as e:
-                    print(e)
-                pass
-            elif(command=="s3"):
-                try:
-                    self.m3_speed=int(command_components[1])
-                except Exception as e:
-                    print(e)
-                pass
-            elif(command=="s4"):
-                try:
-                    self.m4_speed=int(command_components[1])
-                except Exception as e:
-                    print(e)
-                pass
-            elif command == "f":
-                self._start_move()
-                self._move_thread = threading.Thread(
-                    target=self._movement_loop,
-                    args=(self.m1_speed, 0, -self.m3_speed, 0),
-                    daemon=True
-                )
-                self._move_thread.start()
+        if(command == "c"):
+            self.target_yaw = command_components[1]
+            self.pid.reset()
+        elif(command=="kp"):
+            try:
+                self.pid.kp=float(command_components[1])
+                self.kp=float(command_components[1])
+            except Exception as e:
+                print(e)
+            pass
+        elif(command=="ki"):
+            try:
+                self.ki=float(command_components[1])
+                self.pid.ki=float(command_components[1])
+            except Exception as e:
+                print(e)
+            pass
+        elif(command=="kd"):
+            try:
+                self.pid.kd=float(command_components[1])
+                self.kd=float(command_components[1])
+            except Exception as e:
+                print(e)
+            pass
+        elif(command=="ph"):
+            print("getting current heading")
+            print(get_yaw(self.bno))
+            pass
+        elif(command=="sh"):
+            self.target_yaw=get_yaw(self.bno)
+            pass
 
-            elif command == "b":
-                self._start_move()
-                print("back target yaw: %.1f" % self.target_yaw)
-                self._move_thread = threading.Thread(
-                    target=self._movement_loop,
-                    args=(-1*self.m1_speed, 0, self.m3_speed, 0),
-                    daemon=True
-                )
-                self._move_thread.start()
+        elif(command=="s1"):
+            try:
+                self.m1_speed=int(command_components[1])
+            except Exception as e:
+                print(e)
+            pass
+        elif(command=="s2"):
+            try:
+                self.m2_speed=int(command_components[1])
+            except Exception as e:
+                print(e)
+            pass
+        elif(command=="s3"):
+            try:
+                self.m3_speed=int(command_components[1])
+            except Exception as e:
+                print(e)
+            pass
+        elif(command=="s4"):
+            try:
+                self.m4_speed=int(command_components[1])
+            except Exception as e:
+                print(e)
+            pass
+        elif command == "f":
+            self._start_move()
+            self._move_thread = threading.Thread(
+                target=self._movement_loop,
+                args=(self.m1_speed, 0, -self.m3_speed, 0),
+                daemon=True
+            )
+            self._move_thread.start()
 
-            elif command == "r":
-                self._start_move()
-                self._move_thread = threading.Thread(
-                    target=self._movement_loop,
-                    args=(0, self.m2_speed, 0, -self.m4_speed),
-                    daemon=True
-                )
-                self._move_thread.start()
+        elif command == "b":
+            self._start_move()
+            print("back target yaw: %.1f" % self.target_yaw)
+            self._move_thread = threading.Thread(
+                target=self._movement_loop,
+                args=(-1*self.m1_speed, 0, self.m3_speed, 0),
+                daemon=True
+            )
+            self._move_thread.start()
 
-            elif command == "l":
-                self._start_move()
-                self._move_thread = threading.Thread(
-                    target=self._movement_loop,
-                    args=(0, -self.m2_speed, 0, self.m4_speed),
-                    daemon=True
-                )
-                self._move_thread.start()
-            elif(command=="s"):
-                self._stop_move()
-                pass
-            elif(command=="a"):
-                self._start_move()
-                self.send_with_correction(
-                    left=self.m1_speed, front=self.m2_speed,
-                    right=self.m3_speed, back=self.m4_speed
-                )
-            elif(command=="tr"):
-                self.send_motors(-1*self.m1_speed,self.m2_speed,self.m3_speed,-1*self.m4_speed)
-            else:
-                print("command not recognized")
+        elif command == "r":
+            self._start_move()
+            self._move_thread = threading.Thread(
+                target=self._movement_loop,
+                args=(0, self.m2_speed, 0, -self.m4_speed),
+                daemon=True
+            )
+            self._move_thread.start()
+
+        elif command == "l":
+            self._start_move()
+            self._move_thread = threading.Thread(
+                target=self._movement_loop,
+                args=(0, -self.m2_speed, 0, self.m4_speed),
+                daemon=True
+            )
+            self._move_thread.start()
+        elif(command=="s"):
+            self._stop_move()
+            pass
+        elif(command=="a"):
+            self._start_move()
+            self.send_with_correction(
+                left=self.m1_speed, front=self.m2_speed,
+                right=self.m3_speed, back=self.m4_speed
+            )
+        elif(command=="tr"):
+            self.send_motors(-1*self.m1_speed,self.m2_speed,self.m3_speed,-1*self.m4_speed)
+        else:
+            print("command not recognized")
     def close(self):
         self.send_motors(0, 0, 0, 0)
         if self.ser.is_open:
@@ -268,7 +293,9 @@ if __name__ == "__main__":
     bot_mov.send_motors(0,0,0,0)
     try:
         while(True):
-            bot_mov.take_command()
+            command=input()
+            bot_mov.take_command(command)
+
             pass
     except KeyboardInterrupt as e:
         bot_mov.send_motors(0,0,0,0)
