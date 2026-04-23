@@ -8,39 +8,62 @@ import board
 import busio
 import threading
 # from adafruit_bno08x import BNO_REPORT_ROTATION_VECTOR
-from adafruit_bno08x import BNO_REPORT_GAME_ROTATION_VECTOR
-from adafruit_bno08x.i2c import BNO08X_I2C
+# from adafruit_bno08x import BNO_REPORT_GAME_ROTATION_VECTOR
+# from adafruit_bno08x.i2c import BNO08X_I2C
+from adafruit_bno055 import BNO055_I2C
+import adafruit_tca9548a
 
 # ── IMU ─────────────────────────────────────────────────
+# def init_imu(): FOR OLD IMU 
+#     i2c = busio.I2C(board.SCL, board.SDA, frequency=400000)
+#     bno = BNO08X_I2C(i2c)
+#     time.sleep(1)
+#     # bno.enable_feature(BNO_REPORT_ROTATION_VECTOR)
+#     bno.enable_feature(BNO_REPORT_GAME_ROTATION_VECTOR)
+#     return i2c, bno
+
+#FOR NEW IMU
 def init_imu():
     i2c = busio.I2C(board.SCL, board.SDA, frequency=400000)
-    bno = BNO08X_I2C(i2c)
+    tca = adafruit_tca9548a.TCA9548A(i2c)   # mux at 0x70
+    bno = BNO055_I2C(tca[0])                # channel 0
     time.sleep(1)
-    # bno.enable_feature(BNO_REPORT_ROTATION_VECTOR)
-    bno.enable_feature(BNO_REPORT_GAME_ROTATION_VECTOR)
     return i2c, bno
 
-def get_yaw(bno):
-    # quat_i, quat_j, quat_k, quat_real = bno.quaternion
-    somecondition = True
-    while(somecondition):
-        try:
-            quat_i, quat_j, quat_k, quat_real = bno.game_quaternion
-            somecondition = False
-        # except Exception:
-        #     continue
-        except Exception as e:
-                print("I2C error, reinitializing...")
-                time.sleep(0.05)
-                try:
-                    i2c.deinit()
-                except Exception:
-                    pass
-                i2c, bno = init_imu()
+#FOR OLD IMU
+# def get_yaw(bno):
+#     # quat_i, quat_j, quat_k, quat_real = bno.quaternion
+#     somecondition = True
+#     while(somecondition):
+#         try:
+#             quat_i, quat_j, quat_k, quat_real = bno.game_quaternion
+#             somecondition = False
+#         # except Exception:
+#         #     continue
+#         except Exception as e:
+#                 print("I2C error, reinitializing...")
+#                 time.sleep(0.05)
+#                 try:
+#                     i2c.deinit()
+#                 except Exception:
+#                     pass
+#                 i2c, bno = init_imu()
                 
-    # quat_i, quat_j, quat_k, quat_real = bno.game_quaternion
-    yaw = math.atan2(2 * quat_real * quat_k, 1 - 2 * quat_k**2)
-    return math.degrees(yaw) % 360
+#     # quat_i, quat_j, quat_k, quat_real = bno.game_quaternion
+#     yaw = math.atan2(2 * quat_real * quat_k, 1 - 2 * quat_k**2)
+#     return math.degrees(yaw) % 360
+
+#FOR NEW IMU
+def get_yaw(bno):
+    while True:
+        try:
+            heading, _, _ = bno.euler  # heading in degrees 0-360
+            if heading is not None:
+                return heading
+        except Exception as e:
+            print("I2C error, reinitializing...")
+            time.sleep(0.05)
+            i2c, bno = init_imu()
 
 def angle_error(setpoint, current):
     return (setpoint - current + 180) % 360 - 180
