@@ -36,7 +36,7 @@ class test_mov():
     def take_command(self):
         print("input command")
         in2=input()
-        handle_command(in2)
+        self.handle_command(in2)
 
     def handle_command(self, in2):
         command_components=in2.split()
