@@ -42,7 +42,7 @@ def get_yaw(bno):
             i2c, bno = init_imu()
 
 def angle_error(setpoint, current):
-    return (current - setpoint + 180) % 360 - 180 #used to be setpoint - current
+    return (current - setpoint + 180) % 360 - 180 #used to be ...setpoint - current...
 
 # ── PID ─────────────────────────────────────────────────
 class PID:
