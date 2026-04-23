@@ -18,9 +18,7 @@ import threading
 from adafruit_bno055 import BNO055_I2C
 import adafruit_tca9548a
 
-#DOF BNO 0055
-
-#FOR NEW IMU
+#IMU used: DOF BNO 0055
 def init_imu():
     i2c = busio.I2C(board.SCL, board.SDA, frequency=400000)
     tca = adafruit_tca9548a.TCA9548A(i2c)   # mux at 0x70
@@ -33,15 +31,18 @@ def get_yaw(bno):
     while True:
         try:
             heading, _, _ = bno.euler  # heading in degrees 0-360
-            if heading is not None:
-                return heading
+            # if heading is not None:
+            #     return heading
+
+            if heading is not None and -360 <= heading <= 360:  # filter garbage reads
+                return heading % 360  # normalize to 0-360
         except Exception as e:
             print("I2C error, reinitializing...")
             time.sleep(0.05)
             i2c, bno = init_imu()
 
 def angle_error(setpoint, current):
-    return (setpoint - current + 180) % 360 - 180
+    return (current - setpoint + 180) % 360 - 180 #used to be setpoint - current
 
 # ── PID ─────────────────────────────────────────────────
 class PID:
@@ -75,10 +76,10 @@ class PID:
 class test_mov():
     PORT = "/dev/serial0"
     BAUD = 9600
-    KP, KI, KD = 10.0, 0.1, 0.5
-    MAX_CORRECTION = 400
+    KP, KI, KD = 9.0, 0.5, 0.0
+    MAX_CORRECTION = 150
 
-    def __init__(self, m1_s=800,m2_s=800,m3_s=800,m4_s=800):
+    def __init__(self, m1_s=761,m2_s=800,m3_s=800,m4_s=800):
        
         #m4 = front
         self.ser = serial.Serial(self.PORT, self.BAUD, timeout=1)
@@ -110,7 +111,7 @@ class test_mov():
         print(f"Sent {data}")
 
     # ── PID-corrected send ───────────────────────────────
-    def send_with_correction(self, left, front, right, back, reverse = False):
+    def send_with_correction(self, left, front, right, back):
         """
         Apply yaw PID correction to the left/right pair.
         Positive correction = turn right → speed up right, slow down left.
@@ -123,25 +124,32 @@ class test_mov():
             yaw = self.target_yaw   # fall back gracefully
 
         error = angle_error(self.target_yaw, yaw)
-        correction = self.pid.compute(error)
-        correction = max(-self.MAX_CORRECTION, min(self.MAX_CORRECTION, correction))
+        DEADBAND = 2.0  # degrees — ignore tiny errors
+        if abs(error) < DEADBAND:
+            correction = 0.0
+            self.pid._integral = 0  # drain windup when settled
+        else:
+            correction = self.pid.compute(error)
+            correction = max(-self.MAX_CORRECTION, min(self.MAX_CORRECTION, correction))
 
-        if reverse:
-            correction = -correction  # flip correction direction for backward movement
+        # correction = self.pid.compute(error)
+        # correction = max(-self.MAX_CORRECTION, min(self.MAX_CORRECTION, correction))
+
+        # if reverse:
+        #     correction = -correction  # flip correction direction for backward movement
 
         print("Yaw: %.1f°  Error: %.1f°  Correction: %.1f" % (yaw, error, correction))
 
         if left != 0 and right != 0:
             left  += correction
-            right -= correction
+            right += correction #changed from -=
         elif front != 0 and back != 0:
             front += correction
             back  -= correction
-        
         print("front: %.1f, back: %.1f, right: %.1f, left: %.1f" % (front, back, right, left))
 
-        self.send_motors(left, front, -1*right, back)
-    
+        self.send_motors(left, front, right, back) #used to be -1*right
+        
     # ── lock heading & reset PID on each new move ────────
     def _start_move(self):
         # Stop any existing movement thread first
@@ -158,9 +166,9 @@ class test_mov():
         self.send_motors(0, 0, 0, 0)
 
     #THREADING
-    def _movement_loop(self, left, front, right, back, reverse=False):
+    def _movement_loop(self, left, front, right, back):
         while self.use_pid:
-            self.send_with_correction(left, front, right, back, reverse=reverse)
+            self.send_with_correction(left, front, right, back)
             time.sleep(0.05)
 
     #left front right back
@@ -201,7 +209,7 @@ class test_mov():
                 self._start_move()
                 self._move_thread = threading.Thread(
                     target=self._movement_loop,
-                    args=(self.m1_speed, 0, self.m3_speed, 0),
+                    args=(self.m1_speed, 0, -self.m3_speed, 0),
                     daemon=True
                 )
                 self._move_thread.start()
@@ -211,8 +219,7 @@ class test_mov():
                 print("back target yaw: %.1f" % self.target_yaw)
                 self._move_thread = threading.Thread(
                     target=self._movement_loop,
-                    args=(-1*self.m1_speed, 0, -1*self.m3_speed, 0),
-                    kwargs={"reverse": True},
+                    args=(-1*self.m1_speed, 0, self.m3_speed, 0),
                     daemon=True
                 )
                 self._move_thread.start()

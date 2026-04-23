@@ -9,7 +9,7 @@ import struct
 
 
 class test_mov():
-    def __init__(self, m1_s=1000,m2_s=1000,m3_s=1000,m4_s=890):
+    def __init__(self, m1_s=761,m2_s=800,m3_s=800,m4_s=800):
         self.ser = serial.Serial(port, baud, timeout=1)
         self.m1_speed=m1_s
         self.m2_speed=m2_s
