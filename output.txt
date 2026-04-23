@@ -1,0 +1,940 @@
+Locked heading: 0.0°
+Sent b'\x00\x00\x00\x00\x00\x00\x00\x00'
+input command
+input command
+Yaw: 0.0°  Error: -0.1°  Correction: -1.0
+front: 0.0, back: 0.0, right: 801.0, left: 799.0
+Sent b'fC\x00\x00\x99y\x00\x00'
+Yaw: 360.0°  Error: -0.1°  Correction: -0.8
+front: 0.0, back: 0.0, right: 800.8, left: 799.2
+Sent b'fL\x00\x00\x99\x82\x00\x00'
+Yaw: 360.0°  Error: -0.1°  Correction: -0.8
+front: 0.0, back: 0.0, right: 800.8, left: 799.2
+Sent b'fL\x00\x00\x99\x81\x00\x00'
+Yaw: 359.9°  Error: -0.0°  Correction: -0.0
+front: 0.0, back: 0.0, right: 800.0, left: 800.0
+Sent b'fe\x00\x00\x99\x9b\x00\x00'
+Yaw: 1.3°  Error: -1.4°  Correction: -14.5
+front: 0.0, back: 0.0, right: 814.5, left: 785.5
+Sent b'd\x8a\x00\x00\x97\xc0\x00\x00'
+Yaw: 0.5°  Error: -0.6°  Correction: -5.6
+front: 0.0, back: 0.0, right: 805.6, left: 794.4
+Sent b'e\xac\x00\x00\x98\xe2\x00\x00'
+Yaw: 0.4°  Error: -0.5°  Correction: -4.7
+front: 0.0, back: 0.0, right: 804.7, left: 795.3
+Sent b'e\xcb\x00\x00\x99\x01\x00\x00'
+Yaw: 357.9°  Error: 2.0°  Correction: 20.1
+front: 0.0, back: 0.0, right: 779.9, left: 820.1
+Sent b'h\xf8\x00\x00\x9c.\x00\x00'
+Yaw: 355.6°  Error: 4.3°  Correction: 43.3
+front: 0.0, back: 0.0, right: 756.7, left: 843.3
+Sent b'k\xef\x00\x00\x9f%\x00\x00'
+Yaw: 354.5°  Error: 5.4°  Correction: 54.6
+front: 0.0, back: 0.0, right: 745.4, left: 854.6
+Sent b'mb\x00\x00\xa0\x98\x00\x00'
+Yaw: 348.1°  Error: 11.8°  Correction: 119.8
+front: 0.0, back: 0.0, right: 680.2, left: 919.8
+Sent b'u\xbb\x00\x00\xa8\xf1\x00\x00'
+Yaw: 342.2°  Error: 17.7°  Correction: 179.2
+front: 0.0, back: 0.0, right: 620.8, left: 979.2
+Sent b'}U\x00\x00\xb0\x8b\x00\x00'
+Yaw: 337.0°  Error: 22.9°  Correction: 232.5
+front: 0.0, back: 0.0, right: 567.5, left: 1032.5
+Sent b'\x7f\xff\x00\x00\xb7\\\x00\x00'
+Yaw: 26.7°  Error: -26.8°  Correction: -266.0
+front: 0.0, back: 0.0, right: 1066.0, left: 534.0
+Sent b'DZ\x00\x00\x80\x01\x00\x00'
+Yaw: 332.7°  Error: 27.2°  Correction: 275.7
+front: 0.0, back: 0.0, right: 524.3, left: 1075.7
+Sent b'\x7f\xff\x00\x00\xbc\xe6\x00\x00'
+Yaw: 331.5°  Error: 28.5°  Correction: 290.0
+front: 0.0, back: 0.0, right: 510.0, left: 1090.0
+Sent b'\x7f\xff\x00\x00\xbe\xb9\x00\x00'
+
+		********** Packet *************
+DBG::		 HEADER:
+DBG::		 Data Len: 1
+DBG::		 Channel: EXE (1)
+DBG::		 Sequence number: 2
+
+DBG::		 Data:
+DBG::		[0x04] 0x01 
+		*******************************
+
+Yaw: 0.0°  Error: -0.1°  Correction: 4.5
+front: 0.0, back: 0.0, right: 795.5, left: 804.5
+Sent b'f\xf8\x00\x00\x9a-\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.5
+front: 0.0, back: 0.0, right: 795.5, left: 804.5
+Sent b'f\xf7\x00\x00\x9a-\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.5
+front: 0.0, back: 0.0, right: 795.5, left: 804.5
+Sent b'f\xf7\x00\x00\x9a-\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.5
+front: 0.0, back: 0.0, right: 795.5, left: 804.5
+Sent b'f\xf7\x00\x00\x9a-\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.5
+front: 0.0, back: 0.0, right: 795.5, left: 804.5
+Sent b'f\xf7\x00\x00\x9a-\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.4
+front: 0.0, back: 0.0, right: 795.6, left: 804.4
+Sent b'f\xf7\x00\x00\x9a-\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.4
+front: 0.0, back: 0.0, right: 795.6, left: 804.4
+Sent b'f\xf7\x00\x00\x9a,\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.4
+front: 0.0, back: 0.0, right: 795.6, left: 804.4
+Sent b'f\xf6\x00\x00\x9a,\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.4
+front: 0.0, back: 0.0, right: 795.6, left: 804.4
+Sent b'f\xf6\x00\x00\x9a,\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.4
+front: 0.0, back: 0.0, right: 795.6, left: 804.4
+Sent b'f\xf6\x00\x00\x9a,\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.4
+front: 0.0, back: 0.0, right: 795.6, left: 804.4
+Sent b'f\xf6\x00\x00\x9a,\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.4
+front: 0.0, back: 0.0, right: 795.6, left: 804.4
+Sent b'f\xf6\x00\x00\x9a,\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.4
+front: 0.0, back: 0.0, right: 795.6, left: 804.4
+Sent b'f\xf5\x00\x00\x9a+\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.4
+front: 0.0, back: 0.0, right: 795.6, left: 804.4
+Sent b'f\xf5\x00\x00\x9a+\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.4
+front: 0.0, back: 0.0, right: 795.6, left: 804.4
+Sent b'f\xf5\x00\x00\x9a+\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.4
+front: 0.0, back: 0.0, right: 795.6, left: 804.4
+Sent b'f\xf5\x00\x00\x9a+\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.4
+front: 0.0, back: 0.0, right: 795.6, left: 804.4
+Sent b'f\xf5\x00\x00\x9a+\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.4
+front: 0.0, back: 0.0, right: 795.6, left: 804.4
+Sent b'f\xf5\x00\x00\x9a*\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.4
+front: 0.0, back: 0.0, right: 795.6, left: 804.4
+Sent b'f\xf4\x00\x00\x9a*\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.4
+front: 0.0, back: 0.0, right: 795.6, left: 804.4
+Sent b'f\xf4\x00\x00\x9a*\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.4
+front: 0.0, back: 0.0, right: 795.6, left: 804.4
+Sent b'f\xf4\x00\x00\x9a*\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.4
+front: 0.0, back: 0.0, right: 795.6, left: 804.4
+Sent b'f\xf4\x00\x00\x9a*\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.4
+front: 0.0, back: 0.0, right: 795.6, left: 804.4
+Sent b'f\xf4\x00\x00\x9a*\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.4
+front: 0.0, back: 0.0, right: 795.6, left: 804.4
+Sent b'f\xf4\x00\x00\x9a)\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.3
+front: 0.0, back: 0.0, right: 795.7, left: 804.3
+Sent b'f\xf3\x00\x00\x9a)\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.3
+front: 0.0, back: 0.0, right: 795.7, left: 804.3
+Sent b'f\xf3\x00\x00\x9a)\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.3
+front: 0.0, back: 0.0, right: 795.7, left: 804.3
+Sent b'f\xf3\x00\x00\x9a)\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.3
+front: 0.0, back: 0.0, right: 795.7, left: 804.3
+Sent b'f\xf3\x00\x00\x9a)\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.3
+front: 0.0, back: 0.0, right: 795.7, left: 804.3
+Sent b'f\xf3\x00\x00\x9a)\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.3
+front: 0.0, back: 0.0, right: 795.7, left: 804.3
+Sent b'f\xf3\x00\x00\x9a(\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.3
+front: 0.0, back: 0.0, right: 795.7, left: 804.3
+Sent b'f\xf3\x00\x00\x9a(\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.3
+front: 0.0, back: 0.0, right: 795.7, left: 804.3
+Sent b'f\xf2\x00\x00\x9a(\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.3
+front: 0.0, back: 0.0, right: 795.7, left: 804.3
+Sent b'f\xf2\x00\x00\x9a(\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.3
+front: 0.0, back: 0.0, right: 795.7, left: 804.3
+Sent b'f\xf2\x00\x00\x9a(\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.3
+front: 0.0, back: 0.0, right: 795.7, left: 804.3
+Sent b'f\xf2\x00\x00\x9a(\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.3
+front: 0.0, back: 0.0, right: 795.7, left: 804.3
+Sent b"f\xf2\x00\x00\x9a'\x00\x00"
+Yaw: 0.0°  Error: -0.1°  Correction: 4.3
+front: 0.0, back: 0.0, right: 795.7, left: 804.3
+Sent b"f\xf1\x00\x00\x9a'\x00\x00"
+Yaw: 0.0°  Error: -0.1°  Correction: 4.3
+front: 0.0, back: 0.0, right: 795.7, left: 804.3
+Sent b"f\xf1\x00\x00\x9a'\x00\x00"
+Yaw: 0.0°  Error: -0.1°  Correction: 4.3
+front: 0.0, back: 0.0, right: 795.7, left: 804.3
+Sent b"f\xf1\x00\x00\x9a'\x00\x00"
+Yaw: 0.0°  Error: -0.1°  Correction: 4.3
+front: 0.0, back: 0.0, right: 795.7, left: 804.3
+Sent b"f\xf1\x00\x00\x9a'\x00\x00"
+Yaw: 0.0°  Error: -0.1°  Correction: 4.3
+front: 0.0, back: 0.0, right: 795.7, left: 804.3
+Sent b"f\xf1\x00\x00\x9a'\x00\x00"
+Yaw: 0.0°  Error: -0.1°  Correction: 4.3
+front: 0.0, back: 0.0, right: 795.7, left: 804.3
+Sent b'f\xf1\x00\x00\x9a&\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.3
+front: 0.0, back: 0.0, right: 795.7, left: 804.3
+Sent b'f\xf0\x00\x00\x9a&\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.2
+front: 0.0, back: 0.0, right: 795.8, left: 804.2
+Sent b'f\xf0\x00\x00\x9a&\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.2
+front: 0.0, back: 0.0, right: 795.8, left: 804.2
+Sent b'f\xf0\x00\x00\x9a&\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.2
+front: 0.0, back: 0.0, right: 795.8, left: 804.2
+Sent b'f\xf0\x00\x00\x9a&\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.2
+front: 0.0, back: 0.0, right: 795.8, left: 804.2
+Sent b'f\xf0\x00\x00\x9a&\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.2
+front: 0.0, back: 0.0, right: 795.8, left: 804.2
+Sent b'f\xf0\x00\x00\x9a%\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.2
+front: 0.0, back: 0.0, right: 795.8, left: 804.2
+Sent b'f\xef\x00\x00\x9a%\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.2
+front: 0.0, back: 0.0, right: 795.8, left: 804.2
+Sent b'f\xef\x00\x00\x9a%\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.2
+front: 0.0, back: 0.0, right: 795.8, left: 804.2
+Sent b'f\xef\x00\x00\x9a%\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.2
+front: 0.0, back: 0.0, right: 795.8, left: 804.2
+Sent b'f\xef\x00\x00\x9a%\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.2
+front: 0.0, back: 0.0, right: 795.8, left: 804.2
+Sent b'f\xef\x00\x00\x9a%\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.2
+front: 0.0, back: 0.0, right: 795.8, left: 804.2
+Sent b'f\xef\x00\x00\x9a$\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.2
+front: 0.0, back: 0.0, right: 795.8, left: 804.2
+Sent b'f\xee\x00\x00\x9a$\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.2
+front: 0.0, back: 0.0, right: 795.8, left: 804.2
+Sent b'f\xee\x00\x00\x9a$\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.2
+front: 0.0, back: 0.0, right: 795.8, left: 804.2
+Sent b'f\xee\x00\x00\x9a$\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.2
+front: 0.0, back: 0.0, right: 795.8, left: 804.2
+Sent b'f\xee\x00\x00\x9a$\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.2
+front: 0.0, back: 0.0, right: 795.8, left: 804.2
+Sent b'f\xee\x00\x00\x9a$\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.2
+front: 0.0, back: 0.0, right: 795.8, left: 804.2
+Sent b'f\xee\x00\x00\x9a#\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.2
+front: 0.0, back: 0.0, right: 795.8, left: 804.2
+Sent b'f\xed\x00\x00\x9a#\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.2
+front: 0.0, back: 0.0, right: 795.8, left: 804.2
+Sent b'f\xed\x00\x00\x9a#\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.2
+front: 0.0, back: 0.0, right: 795.8, left: 804.2
+Sent b'f\xed\x00\x00\x9a#\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.1
+front: 0.0, back: 0.0, right: 795.9, left: 804.1
+Sent b'f\xed\x00\x00\x9a#\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.1
+front: 0.0, back: 0.0, right: 795.9, left: 804.1
+Sent b'f\xed\x00\x00\x9a#\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.1
+front: 0.0, back: 0.0, right: 795.9, left: 804.1
+Sent b'f\xed\x00\x00\x9a"\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.1
+front: 0.0, back: 0.0, right: 795.9, left: 804.1
+Sent b'f\xec\x00\x00\x9a"\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.1
+front: 0.0, back: 0.0, right: 795.9, left: 804.1
+Sent b'f\xec\x00\x00\x9a"\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.1
+front: 0.0, back: 0.0, right: 795.9, left: 804.1
+Sent b'f\xec\x00\x00\x9a"\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.1
+front: 0.0, back: 0.0, right: 795.9, left: 804.1
+Sent b'f\xec\x00\x00\x9a"\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.1
+front: 0.0, back: 0.0, right: 795.9, left: 804.1
+Sent b'f\xec\x00\x00\x9a"\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.1
+front: 0.0, back: 0.0, right: 795.9, left: 804.1
+Sent b'f\xec\x00\x00\x9a!\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.1
+front: 0.0, back: 0.0, right: 795.9, left: 804.1
+Sent b'f\xeb\x00\x00\x9a!\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.1
+front: 0.0, back: 0.0, right: 795.9, left: 804.1
+Sent b'f\xeb\x00\x00\x9a!\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.1
+front: 0.0, back: 0.0, right: 795.9, left: 804.1
+Sent b'f\xeb\x00\x00\x9a!\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.1
+front: 0.0, back: 0.0, right: 795.9, left: 804.1
+Sent b'f\xeb\x00\x00\x9a!\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.1
+front: 0.0, back: 0.0, right: 795.9, left: 804.1
+Sent b'f\xeb\x00\x00\x9a!\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.1
+front: 0.0, back: 0.0, right: 795.9, left: 804.1
+Sent b'f\xeb\x00\x00\x9a \x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.1
+front: 0.0, back: 0.0, right: 795.9, left: 804.1
+Sent b'f\xea\x00\x00\x9a \x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.1
+front: 0.0, back: 0.0, right: 795.9, left: 804.1
+Sent b'f\xea\x00\x00\x9a \x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.1
+front: 0.0, back: 0.0, right: 795.9, left: 804.1
+Sent b'f\xea\x00\x00\x9a \x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.1
+front: 0.0, back: 0.0, right: 795.9, left: 804.1
+Sent b'f\xea\x00\x00\x9a \x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.0
+front: 0.0, back: 0.0, right: 796.0, left: 804.0
+Sent b'f\xea\x00\x00\x9a \x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.0
+front: 0.0, back: 0.0, right: 796.0, left: 804.0
+Sent b'f\xea\x00\x00\x9a\x1f\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.0
+front: 0.0, back: 0.0, right: 796.0, left: 804.0
+Sent b'f\xe9\x00\x00\x9a\x1f\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.0
+front: 0.0, back: 0.0, right: 796.0, left: 804.0
+Sent b'f\xe9\x00\x00\x9a\x1f\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.0
+front: 0.0, back: 0.0, right: 796.0, left: 804.0
+Sent b'f\xe9\x00\x00\x9a\x1f\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.0
+front: 0.0, back: 0.0, right: 796.0, left: 804.0
+Sent b'f\xe9\x00\x00\x9a\x1f\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.0
+front: 0.0, back: 0.0, right: 796.0, left: 804.0
+Sent b'f\xe9\x00\x00\x9a\x1f\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.0
+front: 0.0, back: 0.0, right: 796.0, left: 804.0
+Sent b'f\xe9\x00\x00\x9a\x1e\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.0
+front: 0.0, back: 0.0, right: 796.0, left: 804.0
+Sent b'f\xe8\x00\x00\x9a\x1e\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.0
+front: 0.0, back: 0.0, right: 796.0, left: 804.0
+Sent b'f\xe8\x00\x00\x9a\x1e\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.0
+front: 0.0, back: 0.0, right: 796.0, left: 804.0
+Sent b'f\xe8\x00\x00\x9a\x1e\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.0
+front: 0.0, back: 0.0, right: 796.0, left: 804.0
+Sent b'f\xe8\x00\x00\x9a\x1e\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.0
+front: 0.0, back: 0.0, right: 796.0, left: 804.0
+Sent b'f\xe8\x00\x00\x9a\x1e\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.0
+front: 0.0, back: 0.0, right: 796.0, left: 804.0
+Sent b'f\xe8\x00\x00\x9a\x1d\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.0
+front: 0.0, back: 0.0, right: 796.0, left: 804.0
+Sent b'f\xe7\x00\x00\x9a\x1d\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.0
+front: 0.0, back: 0.0, right: 796.0, left: 804.0
+Sent b'f\xe7\x00\x00\x9a\x1d\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.0
+front: 0.0, back: 0.0, right: 796.0, left: 804.0
+Sent b'f\xe7\x00\x00\x9a\x1d\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.0
+front: 0.0, back: 0.0, right: 796.0, left: 804.0
+Sent b'f\xe7\x00\x00\x9a\x1d\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.0
+front: 0.0, back: 0.0, right: 796.0, left: 804.0
+Sent b'f\xe7\x00\x00\x9a\x1d\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 4.0
+front: 0.0, back: 0.0, right: 796.0, left: 804.0
+Sent b'f\xe7\x00\x00\x9a\x1c\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.9
+front: 0.0, back: 0.0, right: 796.1, left: 803.9
+Sent b'f\xe6\x00\x00\x9a\x1c\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.9
+front: 0.0, back: 0.0, right: 796.1, left: 803.9
+Sent b'f\xe6\x00\x00\x9a\x1c\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.9
+front: 0.0, back: 0.0, right: 796.1, left: 803.9
+Sent b'f\xe6\x00\x00\x9a\x1c\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.9
+front: 0.0, back: 0.0, right: 796.1, left: 803.9
+Sent b'f\xe6\x00\x00\x9a\x1c\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.9
+front: 0.0, back: 0.0, right: 796.1, left: 803.9
+Sent b'f\xe6\x00\x00\x9a\x1c\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.9
+front: 0.0, back: 0.0, right: 796.1, left: 803.9
+Sent b'f\xe6\x00\x00\x9a\x1b\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.9
+front: 0.0, back: 0.0, right: 796.1, left: 803.9
+Sent b'f\xe5\x00\x00\x9a\x1b\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.9
+front: 0.0, back: 0.0, right: 796.1, left: 803.9
+Sent b'f\xe5\x00\x00\x9a\x1b\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.9
+front: 0.0, back: 0.0, right: 796.1, left: 803.9
+Sent b'f\xe5\x00\x00\x9a\x1b\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.9
+front: 0.0, back: 0.0, right: 796.1, left: 803.9
+Sent b'f\xe5\x00\x00\x9a\x1b\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.9
+front: 0.0, back: 0.0, right: 796.1, left: 803.9
+Sent b'f\xe5\x00\x00\x9a\x1a\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.9
+front: 0.0, back: 0.0, right: 796.1, left: 803.9
+Sent b'f\xe4\x00\x00\x9a\x1a\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.9
+front: 0.0, back: 0.0, right: 796.1, left: 803.9
+Sent b'f\xe4\x00\x00\x9a\x1a\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.9
+front: 0.0, back: 0.0, right: 796.1, left: 803.9
+Sent b'f\xe4\x00\x00\x9a\x1a\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.9
+front: 0.0, back: 0.0, right: 796.1, left: 803.9
+Sent b'f\xe4\x00\x00\x9a\x1a\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.9
+front: 0.0, back: 0.0, right: 796.1, left: 803.9
+Sent b'f\xe4\x00\x00\x9a\x1a\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.9
+front: 0.0, back: 0.0, right: 796.1, left: 803.9
+Sent b'f\xe4\x00\x00\x9a\x19\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.9
+front: 0.0, back: 0.0, right: 796.1, left: 803.9
+Sent b'f\xe3\x00\x00\x9a\x19\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.9
+front: 0.0, back: 0.0, right: 796.1, left: 803.9
+Sent b'f\xe3\x00\x00\x9a\x19\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.8
+front: 0.0, back: 0.0, right: 796.2, left: 803.8
+Sent b'f\xe3\x00\x00\x9a\x19\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.8
+front: 0.0, back: 0.0, right: 796.2, left: 803.8
+Sent b'f\xe3\x00\x00\x9a\x19\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.8
+front: 0.0, back: 0.0, right: 796.2, left: 803.8
+Sent b'f\xe3\x00\x00\x9a\x19\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.8
+front: 0.0, back: 0.0, right: 796.2, left: 803.8
+Sent b'f\xe3\x00\x00\x9a\x18\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.8
+front: 0.0, back: 0.0, right: 796.2, left: 803.8
+Sent b'f\xe2\x00\x00\x9a\x18\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.8
+front: 0.0, back: 0.0, right: 796.2, left: 803.8
+Sent b'f\xe2\x00\x00\x9a\x18\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.8
+front: 0.0, back: 0.0, right: 796.2, left: 803.8
+Sent b'f\xe2\x00\x00\x9a\x18\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.8
+front: 0.0, back: 0.0, right: 796.2, left: 803.8
+Sent b'f\xe2\x00\x00\x9a\x18\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.8
+front: 0.0, back: 0.0, right: 796.2, left: 803.8
+Sent b'f\xe2\x00\x00\x9a\x18\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.8
+front: 0.0, back: 0.0, right: 796.2, left: 803.8
+Sent b'f\xe2\x00\x00\x9a\x17\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.8
+front: 0.0, back: 0.0, right: 796.2, left: 803.8
+Sent b'f\xe2\x00\x00\x9a\x17\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.8
+front: 0.0, back: 0.0, right: 796.2, left: 803.8
+Sent b'f\xe1\x00\x00\x9a\x17\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.8
+front: 0.0, back: 0.0, right: 796.2, left: 803.8
+Sent b'f\xe1\x00\x00\x9a\x17\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.8
+front: 0.0, back: 0.0, right: 796.2, left: 803.8
+Sent b'f\xe1\x00\x00\x9a\x17\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.8
+front: 0.0, back: 0.0, right: 796.2, left: 803.8
+Sent b'f\xe1\x00\x00\x9a\x17\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.8
+front: 0.0, back: 0.0, right: 796.2, left: 803.8
+Sent b'f\xe1\x00\x00\x9a\x16\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.8
+front: 0.0, back: 0.0, right: 796.2, left: 803.8
+Sent b'f\xe1\x00\x00\x9a\x16\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.8
+front: 0.0, back: 0.0, right: 796.2, left: 803.8
+Sent b'f\xe0\x00\x00\x9a\x16\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.8
+front: 0.0, back: 0.0, right: 796.2, left: 803.8
+Sent b'f\xe0\x00\x00\x9a\x16\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.8
+front: 0.0, back: 0.0, right: 796.2, left: 803.8
+Sent b'f\xe0\x00\x00\x9a\x16\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.7
+front: 0.0, back: 0.0, right: 796.3, left: 803.7
+Sent b'f\xe0\x00\x00\x9a\x16\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.7
+front: 0.0, back: 0.0, right: 796.3, left: 803.7
+Sent b'f\xe0\x00\x00\x9a\x15\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.7
+front: 0.0, back: 0.0, right: 796.3, left: 803.7
+Sent b'f\xe0\x00\x00\x9a\x15\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.7
+front: 0.0, back: 0.0, right: 796.3, left: 803.7
+Sent b'f\xdf\x00\x00\x9a\x15\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.7
+front: 0.0, back: 0.0, right: 796.3, left: 803.7
+Sent b'f\xdf\x00\x00\x9a\x15\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.7
+front: 0.0, back: 0.0, right: 796.3, left: 803.7
+Sent b'f\xdf\x00\x00\x9a\x15\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.7
+front: 0.0, back: 0.0, right: 796.3, left: 803.7
+Sent b'f\xdf\x00\x00\x9a\x15\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.7
+front: 0.0, back: 0.0, right: 796.3, left: 803.7
+Sent b'f\xdf\x00\x00\x9a\x14\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.7
+front: 0.0, back: 0.0, right: 796.3, left: 803.7
+Sent b'f\xdf\x00\x00\x9a\x14\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.7
+front: 0.0, back: 0.0, right: 796.3, left: 803.7
+Sent b'f\xde\x00\x00\x9a\x14\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.7
+front: 0.0, back: 0.0, right: 796.3, left: 803.7
+Sent b'f\xde\x00\x00\x9a\x14\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.7
+front: 0.0, back: 0.0, right: 796.3, left: 803.7
+Sent b'f\xde\x00\x00\x9a\x14\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.7
+front: 0.0, back: 0.0, right: 796.3, left: 803.7
+Sent b'f\xde\x00\x00\x9a\x14\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.7
+front: 0.0, back: 0.0, right: 796.3, left: 803.7
+Sent b'f\xde\x00\x00\x9a\x14\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.7
+front: 0.0, back: 0.0, right: 796.3, left: 803.7
+Sent b'f\xde\x00\x00\x9a\x13\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.7
+front: 0.0, back: 0.0, right: 796.3, left: 803.7
+Sent b'f\xdd\x00\x00\x9a\x13\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.7
+front: 0.0, back: 0.0, right: 796.3, left: 803.7
+Sent b'f\xdd\x00\x00\x9a\x13\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.7
+front: 0.0, back: 0.0, right: 796.3, left: 803.7
+Sent b'f\xdd\x00\x00\x9a\x13\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.7
+front: 0.0, back: 0.0, right: 796.3, left: 803.7
+Sent b'f\xdd\x00\x00\x9a\x13\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.7
+front: 0.0, back: 0.0, right: 796.3, left: 803.7
+Sent b'f\xdd\x00\x00\x9a\x13\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.6
+front: 0.0, back: 0.0, right: 796.4, left: 803.6
+Sent b'f\xdd\x00\x00\x9a\x12\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.6
+front: 0.0, back: 0.0, right: 796.4, left: 803.6
+Sent b'f\xdc\x00\x00\x9a\x12\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.6
+front: 0.0, back: 0.0, right: 796.4, left: 803.6
+Sent b'f\xdc\x00\x00\x9a\x12\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.6
+front: 0.0, back: 0.0, right: 796.4, left: 803.6
+Sent b'f\xdc\x00\x00\x9a\x12\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.6
+front: 0.0, back: 0.0, right: 796.4, left: 803.6
+Sent b'f\xdc\x00\x00\x9a\x12\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.6
+front: 0.0, back: 0.0, right: 796.4, left: 803.6
+Sent b'f\xdc\x00\x00\x9a\x12\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.6
+front: 0.0, back: 0.0, right: 796.4, left: 803.6
+Sent b'f\xdc\x00\x00\x9a\x11\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.6
+front: 0.0, back: 0.0, right: 796.4, left: 803.6
+Sent b'f\xdb\x00\x00\x9a\x11\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.6
+front: 0.0, back: 0.0, right: 796.4, left: 803.6
+Sent b'f\xdb\x00\x00\x9a\x11\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.6
+front: 0.0, back: 0.0, right: 796.4, left: 803.6
+Sent b'f\xdb\x00\x00\x9a\x11\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.6
+front: 0.0, back: 0.0, right: 796.4, left: 803.6
+Sent b'f\xdb\x00\x00\x9a\x11\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.6
+front: 0.0, back: 0.0, right: 796.4, left: 803.6
+Sent b'f\xdb\x00\x00\x9a\x11\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.6
+front: 0.0, back: 0.0, right: 796.4, left: 803.6
+Sent b'f\xdb\x00\x00\x9a\x10\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.6
+front: 0.0, back: 0.0, right: 796.4, left: 803.6
+Sent b'f\xda\x00\x00\x9a\x10\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.6
+front: 0.0, back: 0.0, right: 796.4, left: 803.6
+Sent b'f\xda\x00\x00\x9a\x10\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.6
+front: 0.0, back: 0.0, right: 796.4, left: 803.6
+Sent b'f\xda\x00\x00\x9a\x10\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.6
+front: 0.0, back: 0.0, right: 796.4, left: 803.6
+Sent b'f\xda\x00\x00\x9a\x10\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.6
+front: 0.0, back: 0.0, right: 796.4, left: 803.6
+Sent b'f\xda\x00\x00\x9a\x0f\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.5
+front: 0.0, back: 0.0, right: 796.5, left: 803.5
+Sent b'f\xd9\x00\x00\x9a\x0f\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.5
+front: 0.0, back: 0.0, right: 796.5, left: 803.5
+Sent b'f\xd9\x00\x00\x9a\x0f\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.5
+front: 0.0, back: 0.0, right: 796.5, left: 803.5
+Sent b'f\xd9\x00\x00\x9a\x0f\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.5
+front: 0.0, back: 0.0, right: 796.5, left: 803.5
+Sent b'f\xd9\x00\x00\x9a\x0f\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.5
+front: 0.0, back: 0.0, right: 796.5, left: 803.5
+Sent b'f\xd9\x00\x00\x9a\x0f\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.5
+front: 0.0, back: 0.0, right: 796.5, left: 803.5
+Sent b'f\xd9\x00\x00\x9a\x0e\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.5
+front: 0.0, back: 0.0, right: 796.5, left: 803.5
+Sent b'f\xd8\x00\x00\x9a\x0e\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.5
+front: 0.0, back: 0.0, right: 796.5, left: 803.5
+Sent b'f\xd8\x00\x00\x9a\x0e\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.5
+front: 0.0, back: 0.0, right: 796.5, left: 803.5
+Sent b'f\xd8\x00\x00\x9a\x0e\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.5
+front: 0.0, back: 0.0, right: 796.5, left: 803.5
+Sent b'f\xd8\x00\x00\x9a\x0e\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.5
+front: 0.0, back: 0.0, right: 796.5, left: 803.5
+Sent b'f\xd8\x00\x00\x9a\x0e\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.5
+front: 0.0, back: 0.0, right: 796.5, left: 803.5
+Sent b'f\xd8\x00\x00\x9a\r\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.5
+front: 0.0, back: 0.0, right: 796.5, left: 803.5
+Sent b'f\xd7\x00\x00\x9a\r\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.5
+front: 0.0, back: 0.0, right: 796.5, left: 803.5
+Sent b'f\xd7\x00\x00\x9a\r\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.5
+front: 0.0, back: 0.0, right: 796.5, left: 803.5
+Sent b'f\xd7\x00\x00\x9a\r\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.5
+front: 0.0, back: 0.0, right: 796.5, left: 803.5
+Sent b'f\xd7\x00\x00\x9a\r\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.5
+front: 0.0, back: 0.0, right: 796.5, left: 803.5
+Sent b'f\xd7\x00\x00\x9a\r\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.5
+front: 0.0, back: 0.0, right: 796.5, left: 803.5
+Sent b'f\xd7\x00\x00\x9a\x0c\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.5
+front: 0.0, back: 0.0, right: 796.5, left: 803.5
+Sent b'f\xd6\x00\x00\x9a\x0c\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.5
+front: 0.0, back: 0.0, right: 796.5, left: 803.5
+Sent b'f\xd6\x00\x00\x9a\x0c\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.4
+front: 0.0, back: 0.0, right: 796.6, left: 803.4
+Sent b'f\xd6\x00\x00\x9a\x0c\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.4
+front: 0.0, back: 0.0, right: 796.6, left: 803.4
+Sent b'f\xd6\x00\x00\x9a\x0c\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.4
+front: 0.0, back: 0.0, right: 796.6, left: 803.4
+Sent b'f\xd6\x00\x00\x9a\x0c\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.4
+front: 0.0, back: 0.0, right: 796.6, left: 803.4
+Sent b'f\xd6\x00\x00\x9a\x0b\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.4
+front: 0.0, back: 0.0, right: 796.6, left: 803.4
+Sent b'f\xd5\x00\x00\x9a\x0b\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.4
+front: 0.0, back: 0.0, right: 796.6, left: 803.4
+Sent b'f\xd5\x00\x00\x9a\x0b\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.4
+front: 0.0, back: 0.0, right: 796.6, left: 803.4
+Sent b'f\xd5\x00\x00\x9a\x0b\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.4
+front: 0.0, back: 0.0, right: 796.6, left: 803.4
+Sent b'f\xd5\x00\x00\x9a\x0b\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.4
+front: 0.0, back: 0.0, right: 796.6, left: 803.4
+Sent b'f\xd5\x00\x00\x9a\x0b\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.4
+front: 0.0, back: 0.0, right: 796.6, left: 803.4
+Sent b'f\xd5\x00\x00\x9a\n\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.4
+front: 0.0, back: 0.0, right: 796.6, left: 803.4
+Sent b'f\xd4\x00\x00\x9a\n\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.4
+front: 0.0, back: 0.0, right: 796.6, left: 803.4
+Sent b'f\xd4\x00\x00\x9a\n\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.4
+front: 0.0, back: 0.0, right: 796.6, left: 803.4
+Sent b'f\xd4\x00\x00\x9a\n\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.4
+front: 0.0, back: 0.0, right: 796.6, left: 803.4
+Sent b'f\xd4\x00\x00\x9a\n\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.4
+front: 0.0, back: 0.0, right: 796.6, left: 803.4
+Sent b'f\xd4\x00\x00\x9a\n\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.4
+front: 0.0, back: 0.0, right: 796.6, left: 803.4
+Sent b'f\xd4\x00\x00\x9a\t\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.4
+front: 0.0, back: 0.0, right: 796.6, left: 803.4
+Sent b'f\xd3\x00\x00\x9a\t\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.4
+front: 0.0, back: 0.0, right: 796.6, left: 803.4
+Sent b'f\xd3\x00\x00\x9a\t\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.4
+front: 0.0, back: 0.0, right: 796.6, left: 803.4
+Sent b'f\xd3\x00\x00\x9a\t\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.4
+front: 0.0, back: 0.0, right: 796.6, left: 803.4
+Sent b'f\xd3\x00\x00\x9a\t\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.3
+front: 0.0, back: 0.0, right: 796.7, left: 803.3
+Sent b'f\xd3\x00\x00\x9a\t\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.3
+front: 0.0, back: 0.0, right: 796.7, left: 803.3
+Sent b'f\xd3\x00\x00\x9a\x08\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.3
+front: 0.0, back: 0.0, right: 796.7, left: 803.3
+Sent b'f\xd2\x00\x00\x9a\x08\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.3
+front: 0.0, back: 0.0, right: 796.7, left: 803.3
+Sent b'f\xd2\x00\x00\x9a\x08\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.3
+front: 0.0, back: 0.0, right: 796.7, left: 803.3
+Sent b'f\xd2\x00\x00\x9a\x08\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.3
+front: 0.0, back: 0.0, right: 796.7, left: 803.3
+Sent b'f\xd2\x00\x00\x9a\x08\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.3
+front: 0.0, back: 0.0, right: 796.7, left: 803.3
+Sent b'f\xd2\x00\x00\x9a\x08\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.3
+front: 0.0, back: 0.0, right: 796.7, left: 803.3
+Sent b'f\xd2\x00\x00\x9a\x07\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.3
+front: 0.0, back: 0.0, right: 796.7, left: 803.3
+Sent b'f\xd2\x00\x00\x9a\x07\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.3
+front: 0.0, back: 0.0, right: 796.7, left: 803.3
+Sent b'f\xd1\x00\x00\x9a\x07\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.3
+front: 0.0, back: 0.0, right: 796.7, left: 803.3
+Sent b'f\xd1\x00\x00\x9a\x07\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.3
+front: 0.0, back: 0.0, right: 796.7, left: 803.3
+Sent b'f\xd1\x00\x00\x9a\x07\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.3
+front: 0.0, back: 0.0, right: 796.7, left: 803.3
+Sent b'f\xd1\x00\x00\x9a\x07\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.3
+front: 0.0, back: 0.0, right: 796.7, left: 803.3
+Sent b'f\xd1\x00\x00\x9a\x06\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.3
+front: 0.0, back: 0.0, right: 796.7, left: 803.3
+Sent b'f\xd0\x00\x00\x9a\x06\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.3
+front: 0.0, back: 0.0, right: 796.7, left: 803.3
+Sent b'f\xd0\x00\x00\x9a\x06\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.3
+front: 0.0, back: 0.0, right: 796.7, left: 803.3
+Sent b'f\xd0\x00\x00\x9a\x06\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.3
+front: 0.0, back: 0.0, right: 796.7, left: 803.3
+Sent b'f\xd0\x00\x00\x9a\x06\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.3
+front: 0.0, back: 0.0, right: 796.7, left: 803.3
+Sent b'f\xd0\x00\x00\x9a\x06\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.2
+front: 0.0, back: 0.0, right: 796.8, left: 803.2
+Sent b'f\xcf\x00\x00\x9a\x05\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.2
+front: 0.0, back: 0.0, right: 796.8, left: 803.2
+Sent b'f\xcf\x00\x00\x9a\x05\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.2
+front: 0.0, back: 0.0, right: 796.8, left: 803.2
+Sent b'f\xcf\x00\x00\x9a\x05\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.2
+front: 0.0, back: 0.0, right: 796.8, left: 803.2
+Sent b'f\xcf\x00\x00\x9a\x05\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.2
+front: 0.0, back: 0.0, right: 796.8, left: 803.2
+Sent b'f\xcf\x00\x00\x9a\x05\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.2
+front: 0.0, back: 0.0, right: 796.8, left: 803.2
+Sent b'f\xcf\x00\x00\x9a\x04\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.2
+front: 0.0, back: 0.0, right: 796.8, left: 803.2
+Sent b'f\xce\x00\x00\x9a\x04\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.2
+front: 0.0, back: 0.0, right: 796.8, left: 803.2
+Sent b'f\xce\x00\x00\x9a\x04\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.2
+front: 0.0, back: 0.0, right: 796.8, left: 803.2
+Sent b'f\xce\x00\x00\x9a\x04\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.2
+front: 0.0, back: 0.0, right: 796.8, left: 803.2
+Sent b'f\xce\x00\x00\x9a\x04\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.2
+front: 0.0, back: 0.0, right: 796.8, left: 803.2
+Sent b'f\xce\x00\x00\x9a\x04\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.2
+front: 0.0, back: 0.0, right: 796.8, left: 803.2
+Sent b'f\xce\x00\x00\x9a\x03\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.2
+front: 0.0, back: 0.0, right: 796.8, left: 803.2
+Sent b'f\xcd\x00\x00\x9a\x03\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.2
+front: 0.0, back: 0.0, right: 796.8, left: 803.2
+Sent b'f\xcd\x00\x00\x9a\x03\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.2
+front: 0.0, back: 0.0, right: 796.8, left: 803.2
+Sent b'f\xcd\x00\x00\x9a\x03\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.2
+front: 0.0, back: 0.0, right: 796.8, left: 803.2
+Sent b'f\xcd\x00\x00\x9a\x03\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.2
+front: 0.0, back: 0.0, right: 796.8, left: 803.2
+Sent b'f\xcd\x00\x00\x9a\x03\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.2
+front: 0.0, back: 0.0, right: 796.8, left: 803.2
+Sent b'f\xcd\x00\x00\x9a\x02\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.2
+front: 0.0, back: 0.0, right: 796.8, left: 803.2
+Sent b'f\xcc\x00\x00\x9a\x02\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.1
+front: 0.0, back: 0.0, right: 796.9, left: 803.1
+Sent b'f\xcc\x00\x00\x9a\x02\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.1
+front: 0.0, back: 0.0, right: 796.9, left: 803.1
+Sent b'f\xcc\x00\x00\x9a\x02\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.1
+front: 0.0, back: 0.0, right: 796.9, left: 803.1
+Sent b'f\xcc\x00\x00\x9a\x02\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.1
+front: 0.0, back: 0.0, right: 796.9, left: 803.1
+Sent b'f\xcc\x00\x00\x9a\x02\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.1
+front: 0.0, back: 0.0, right: 796.9, left: 803.1
+Sent b'f\xcc\x00\x00\x9a\x01\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.1
+front: 0.0, back: 0.0, right: 796.9, left: 803.1
+Sent b'f\xcb\x00\x00\x9a\x01\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.1
+front: 0.0, back: 0.0, right: 796.9, left: 803.1
+Sent b'f\xcb\x00\x00\x9a\x01\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.1
+front: 0.0, back: 0.0, right: 796.9, left: 803.1
+Sent b'f\xcb\x00\x00\x9a\x01\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.1
+front: 0.0, back: 0.0, right: 796.9, left: 803.1
+Sent b'f\xcb\x00\x00\x9a\x01\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.1
+front: 0.0, back: 0.0, right: 796.9, left: 803.1
+Sent b'f\xcb\x00\x00\x9a\x01\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.1
+front: 0.0, back: 0.0, right: 796.9, left: 803.1
+Sent b'f\xcb\x00\x00\x9a\x00\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.1
+front: 0.0, back: 0.0, right: 796.9, left: 803.1
+Sent b'f\xca\x00\x00\x9a\x00\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.1
+front: 0.0, back: 0.0, right: 796.9, left: 803.1
+Sent b'f\xca\x00\x00\x9a\x00\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.1
+front: 0.0, back: 0.0, right: 796.9, left: 803.1
+Sent b'f\xca\x00\x00\x9a\x00\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.1
+front: 0.0, back: 0.0, right: 796.9, left: 803.1
+Sent b'f\xca\x00\x00\x9a\x00\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.1
+front: 0.0, back: 0.0, right: 796.9, left: 803.1
+Sent b'f\xca\x00\x00\x9a\x00\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.1
+front: 0.0, back: 0.0, right: 796.9, left: 803.1
+Sent b'f\xca\x00\x00\x99\xff\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.1
+front: 0.0, back: 0.0, right: 796.9, left: 803.1
+Sent b'f\xc9\x00\x00\x99\xff\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.1
+front: 0.0, back: 0.0, right: 796.9, left: 803.1
+Sent b'f\xc9\x00\x00\x99\xff\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.1
+front: 0.0, back: 0.0, right: 796.9, left: 803.1
+Sent b'f\xc9\x00\x00\x99\xff\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.0
+front: 0.0, back: 0.0, right: 797.0, left: 803.0
+Sent b'f\xc9\x00\x00\x99\xff\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.0
+front: 0.0, back: 0.0, right: 797.0, left: 803.0
+Sent b'f\xc9\x00\x00\x99\xff\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.0
+front: 0.0, back: 0.0, right: 797.0, left: 803.0
+Sent b'f\xc9\x00\x00\x99\xfe\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.0
+front: 0.0, back: 0.0, right: 797.0, left: 803.0
+Sent b'f\xc9\x00\x00\x99\xfe\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.0
+front: 0.0, back: 0.0, right: 797.0, left: 803.0
+Sent b'f\xc8\x00\x00\x99\xfe\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.0
+front: 0.0, back: 0.0, right: 797.0, left: 803.0
+Sent b'f\xc8\x00\x00\x99\xfe\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.0
+front: 0.0, back: 0.0, right: 797.0, left: 803.0
+Sent b'f\xc8\x00\x00\x99\xfe\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.0
+front: 0.0, back: 0.0, right: 797.0, left: 803.0
+Sent b'f\xc8\x00\x00\x99\xfe\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.0
+front: 0.0, back: 0.0, right: 797.0, left: 803.0
+Sent b'f\xc8\x00\x00\x99\xfd\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.0
+front: 0.0, back: 0.0, right: 797.0, left: 803.0
+Sent b'f\xc8\x00\x00\x99\xfd\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.0
+front: 0.0, back: 0.0, right: 797.0, left: 803.0
+Sent b'f\xc7\x00\x00\x99\xfd\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.0
+front: 0.0, back: 0.0, right: 797.0, left: 803.0
+Sent b'f\xc7\x00\x00\x99\xfd\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.0
+front: 0.0, back: 0.0, right: 797.0, left: 803.0
+Sent b'f\xc7\x00\x00\x99\xfd\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 3.0
+front: 0.0, back: 0.0, right: 797.0, left: 803.0
+Sent b'f\xc7\x00\x00\x99\xfd\x00\x00'
+Sent b'\x00\x00\x00\x00\x00\x00\x00\x00'
+Yaw: 0.0°  Error: -0.1°  Correction: 2.9
+front: 0.0, back: 0.0, right: 797.1, left: 802.9
+Sent b'\x00\x00\x00\x00\x00\x00\x00\x00'
