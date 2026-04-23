@@ -1,4 +1,12 @@
-#COPY of control.py
+# COPY of control.py by Spencer, Phuong & Charlotte, for Tufts Pacbot
+# How to use:
+# what to type in terminal:
+    # cd pacbot
+    # source .venv/bin/activate
+    # python3 copy_control.py
+# now the program is running so you can give it f, b, l, r, s commands (forward,
+# back, left, right, stop) commands to make the robot move
+# stop the program with Ctrl + "C"
 
 import math
 import time
@@ -7,20 +15,10 @@ import serial
 import board
 import busio
 import threading
-# from adafruit_bno08x import BNO_REPORT_ROTATION_VECTOR
-# from adafruit_bno08x import BNO_REPORT_GAME_ROTATION_VECTOR
-# from adafruit_bno08x.i2c import BNO08X_I2C
 from adafruit_bno055 import BNO055_I2C
 import adafruit_tca9548a
 
-# ── IMU ─────────────────────────────────────────────────
-# def init_imu(): FOR OLD IMU 
-#     i2c = busio.I2C(board.SCL, board.SDA, frequency=400000)
-#     bno = BNO08X_I2C(i2c)
-#     time.sleep(1)
-#     # bno.enable_feature(BNO_REPORT_ROTATION_VECTOR)
-#     bno.enable_feature(BNO_REPORT_GAME_ROTATION_VECTOR)
-#     return i2c, bno
+#DOF BNO 0055
 
 #FOR NEW IMU
 def init_imu():
@@ -29,29 +27,6 @@ def init_imu():
     bno = BNO055_I2C(tca[0])                # channel 0
     time.sleep(1)
     return i2c, bno
-
-#FOR OLD IMU
-# def get_yaw(bno):
-#     # quat_i, quat_j, quat_k, quat_real = bno.quaternion
-#     somecondition = True
-#     while(somecondition):
-#         try:
-#             quat_i, quat_j, quat_k, quat_real = bno.game_quaternion
-#             somecondition = False
-#         # except Exception:
-#         #     continue
-#         except Exception as e:
-#                 print("I2C error, reinitializing...")
-#                 time.sleep(0.05)
-#                 try:
-#                     i2c.deinit()
-#                 except Exception:
-#                     pass
-#                 i2c, bno = init_imu()
-                
-#     # quat_i, quat_j, quat_k, quat_real = bno.game_quaternion
-#     yaw = math.atan2(2 * quat_real * quat_k, 1 - 2 * quat_k**2)
-#     return math.degrees(yaw) % 360
 
 #FOR NEW IMU
 def get_yaw(bno):
@@ -156,43 +131,12 @@ class test_mov():
 
         print("Yaw: %.1f°  Error: %.1f°  Correction: %.1f" % (yaw, error, correction))
 
-        # # Only adjust motors that are actually running
-        # if left != 0:
-        #     left  = left  - correction if left  > 0 else left  + correction
-        # if right != 0:
-        #     right = right + correction if right > 0 else right - correction
-        # if front != 0:
-        #     front = front + correction if front > 0 else front - correction
-        # if back != 0:
-        #     back = back - correction if back > 0 else back + correction
-        
-        # if left != 0:
-        #     left  -= correction
-        # if right != 0:
-        #     right -= correction   # right is already negative for forward, so this speeds it up ✓
-        # if front != 0:
-        #     front += correction
-        # if back != 0:
-        #     back  += correction
-        
-        # if left != 0 and right != 0:
-        #     # if correction > 0:
-        # left += correction   # slow down left only
-        # #     # else:
-        # right += correction  # right is negative, subtracting negative = less negative = slower
-        # if front != 0 and back != 0:
-        #     # if correction > 0:
-        #     back += correction
-        #     # else:
-        #     front += correction
-
         if left != 0 and right != 0:
-            left  += correction   # positive correction → left slows
-            right -= correction   # positive correction → right speeds up (less negative)
-
-        # if front != 0 and back != 0:
-        #     front -= correction
-        #     back  += correction
+            left  += correction
+            right -= correction
+        elif front != 0 and back != 0:
+            front += correction
+            back  -= correction
         
         print("front: %.1f, back: %.1f, right: %.1f, left: %.1f" % (front, back, right, left))
 
@@ -200,6 +144,11 @@ class test_mov():
     
     # ── lock heading & reset PID on each new move ────────
     def _start_move(self):
+        # Stop any existing movement thread first
+        self.use_pid = False
+        if hasattr(self, '_move_thread') and self._move_thread is not None:
+            self._move_thread.join(timeout=0.2)  # wait for old thread to die
+        
         self.target_yaw = get_yaw(self.bno)
         self.pid.reset()
         self.use_pid = True
@@ -248,47 +197,43 @@ class test_mov():
                 except Exception as e:
                     print(e)
                 pass
-            elif(command=="f"):
+            elif command == "f":
                 self._start_move()
-                t = threading.Thread(
+                self._move_thread = threading.Thread(
                     target=self._movement_loop,
                     args=(self.m1_speed, 0, self.m3_speed, 0),
                     daemon=True
                 )
-                t.start()
-                pass
-            elif(command=="b"):
-                # self._start_move()
-                # self.send_with_correction(
-                #     left=-self.m1_speed, front=0,
-                #     right=self.m3_speed, back=0
-                # )
-                # pass
+                self._move_thread.start()
+
+            elif command == "b":
                 self._start_move()
-                # self.target_yaw = (self.target_yaw + 180) % 360
-                print("back target yaw: %.1f" % (self.target_yaw))
-                t = threading.Thread(
+                print("back target yaw: %.1f" % self.target_yaw)
+                self._move_thread = threading.Thread(
                     target=self._movement_loop,
                     args=(-1*self.m1_speed, 0, -1*self.m3_speed, 0),
                     kwargs={"reverse": True},
                     daemon=True
                 )
-                t.start()
-                pass
-            elif(command=="r"): 
+                self._move_thread.start()
+
+            elif command == "r":
                 self._start_move()
-                self.send_with_correction(
-                    left=0, front=self.m2_speed,
-                    right=0, back=-self.m4_speed
+                self._move_thread = threading.Thread(
+                    target=self._movement_loop,
+                    args=(0, self.m2_speed, 0, -self.m4_speed),
+                    daemon=True
                 )
-                pass
-            elif(command=="l"):
+                self._move_thread.start()
+
+            elif command == "l":
                 self._start_move()
-                self.send_with_correction(
-                    left=0, front=-self.m2_speed,
-                    right=0, back=self.m4_speed
+                self._move_thread = threading.Thread(
+                    target=self._movement_loop,
+                    args=(0, -self.m2_speed, 0, self.m4_speed),
+                    daemon=True
                 )
-                pass
+                self._move_thread.start()
             elif(command=="s"):
                 self._stop_move()
                 pass
@@ -303,8 +248,6 @@ class test_mov():
             else:
                 print("command not recognized")
     def close(self):
-        # if 'ser' in locals() and self.ser.is_open:
-        #     self.ser.close()
         self.send_motors(0, 0, 0, 0)
         if self.ser.is_open:
             self.ser.close()
