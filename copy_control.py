@@ -19,26 +19,24 @@ from adafruit_bno055 import BNO055_I2C
 import adafruit_tca9548a
 
 #IMU used: DOF BNO 0055
-def init_imu():
-    i2c = busio.I2C(board.SCL, board.SDA, frequency=400000)
+def init_imu(i2c):
     bno = BNO055_I2C(i2c)                # channel 0
     time.sleep(1)
-    return i2c, bno
+    return  bno
 
 #FOR NEW IMU
 def get_yaw(bno):
     while True:
-        try:
-            heading, _, _ = bno.euler  # heading in degrees 0-360
-            # if heading is not None:
-            #     return heading
+        heading, _, _ = bno.euler  # heading in degrees 0-360
+        # if heading is not None:
+        #     return heading
 
-            if heading is not None and -360 <= heading <= 360:  # filter garbage reads
-                return heading % 360  # normalize to 0-360
-        except Exception as e:
-            print("I2C error, reinitializing...")
-            time.sleep(0.05)
-            i2c, bno = init_imu()
+        if heading is not None and -360 <= heading <= 360:  # filter garbage reads
+            return heading % 360  # normalize to 0-360
+   # except Exception as e:
+        #    print("I2C error, reinitializing...")
+         #   time.sleep(0.05)
+          #  i2c, bno = init_imu()
 
 def angle_error(setpoint, current):
     return (current - setpoint + 180) % 360 - 180 #used to be ...setpoint - current...
@@ -75,22 +73,22 @@ class PID:
 class test_mov():
     PORT = "/dev/serial0"
     BAUD = 9600
-    KP, KI, KD = 15, 0, 0.0
+    KP, KI, KD = 150, 0, 0.0
     MAX_CORRECTION = 150
 
-    def __init__(self, m1_s=761,m2_s=800,m3_s=800,m4_s=800):
+    def __init__(self,i2c, m1_s=761,m2_s=800,m3_s=800,m4_s=800):
        
         #m4 = front
         self.ser = serial.Serial(self.PORT, self.BAUD, timeout=1)
         time.sleep(2)
-
+        self.i2c=i2c
         self.m1_speed=m1_s
         self.m2_speed=m2_s
         self.m3_speed=m3_s
         self.m4_speed=m4_s
 
         # IMU + PID
-        self.i2c, self.bno = init_imu()
+        self.bno = init_imu(self.i2c)
         self.pid = PID(self.KP, self.KI, self.KD)
         self.target_yaw = get_yaw(self.bno)
         self.use_pid = False   # only active during movement
@@ -289,7 +287,8 @@ class test_mov():
             pass
 
 if __name__ == "__main__":
-    bot_mov=test_mov()
+    i2c = busio.I2C(board.SCL, board.SDA, frequency=400000)
+    bot_mov=test_mov(i2c)
     bot_mov.send_motors(0,0,0,0)
     try:
         while(True):

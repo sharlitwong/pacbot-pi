@@ -1,0 +1,20 @@
+import 
+
+
+if __name__ == "__main__":
+    i2c = busio.I2C(board.SCL, board.SDA, frequency=400000)
+    bot_mov=test_mov(i2c)
+    bot_mov.send_motors(0,0,0,0)
+    try:
+        while(True):
+            command=input()
+            bot_mov.take_command(command)
+
+            pass
+    except KeyboardInterrupt as e:
+        bot_mov.send_motors(0,0,0,0)
+        bot_mov.close()
+        exit
+
+
+
