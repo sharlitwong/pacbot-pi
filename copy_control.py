@@ -110,7 +110,7 @@ class PID:
 class test_mov():
     PORT = "/dev/serial0"
     BAUD = 9600
-    KP, KI, KD = 15, 0, 0
+    KP, KI, KD = 60, 0, 0
     MAX_CORRECTION = 150
 
     DIR_SENSORS = {
