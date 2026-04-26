@@ -9,8 +9,9 @@ import threading
 from adafruit_bno055 import BNO055_I2C
 import adafruit_tca9548a
 import adafruit_vl53l4cd
+from concurrent.futures import ThreadPoolExecutor
 
-OBSTACLE_THRESHOLD_CM = 2.0  # stop if any sensor reads <= this
+OBSTACLE_THRESHOLD_CM = 2.0
 
 def init_imu(i2c):
     bno = BNO055_I2C(i2c)
@@ -26,8 +27,11 @@ def get_yaw(bno):
 def angle_error(setpoint, current):
     return (current - setpoint + 180) % 360 - 180
 
-def setup_tof_sensors(tca, channels, timing_budget=200, inter_measurement=0):
-    """Initialize VL53L4CD sensors on given TCA9548A channels."""
+def setup_tof_sensors(tca, channels, timing_budget=50, inter_measurement=0):
+    """
+    timing_budget=50ms is much faster than 200ms while still being reliable
+    at short distances. inter_measurement=0 = continuous mode (no idle gap).
+    """
     sensors = []
     for ch in channels:
         sensor = adafruit_vl53l4cd.VL53L4CD(tca[ch])
@@ -38,20 +42,18 @@ def setup_tof_sensors(tca, channels, timing_budget=200, inter_measurement=0):
         print(f"ToF sensor on channel {ch} initialized.")
     return sensors
 
-def read_tof_sensors(sensors):
-    """Read distance in cm from each sensor. Returns list; None on error."""
-    readings = []
-    for sensor in sensors:
-        try:
-            while not sensor.data_ready:
-                pass
-            dist = sensor.distance
-            sensor.clear_interrupt()
-            readings.append(dist)
-        except Exception as e:
-            print(f"ToF read error: {e}")
-            readings.append(None)
-    return readings
+def read_single_sensor(sensor):
+    """Read one sensor — called in parallel via ThreadPoolExecutor."""
+    try:
+        while not sensor.data_ready:
+            time.sleep(0.001)   # 1ms sleep instead of busy-spin
+        dist = sensor.distance
+        sensor.clear_interrupt()
+        return dist
+    except Exception as e:
+        print(f"ToF read error: {e}")
+        return None
+
 
 class PID:
     def __init__(self, kp, ki, kd, integral_limit=50):
@@ -85,14 +87,15 @@ class test_mov():
     BAUD = 9600
     KP, KI, KD = 150, 0, 0.0
     MAX_CORRECTION = 150
-    # Maps direction command → which sensor indices are "in front of" motion
-    # Sensor order: [front=0, left=1, back=2, right=3]  (matches your channels)
+
+    # which sensor indices to check per direction
+    # sensor order: [front=0, left=1, back=2, right=3]
     DIR_SENSORS = {
-        "f": [0],       # moving forward → check front sensor
-        "b": [2],       # moving backward → check back sensor
-        "r": [3],       # moving right → check right sensor
-        "l": [1],       # moving left → check left sensor
-        "a": [0,1,2,3], # arbitrary → check all
+        "f": [0],
+        "b": [2],
+        "r": [3],
+        "l": [1],
+        "a": [0, 1, 2, 3],
     }
 
     def __init__(self, i2c, m1_s=761, m2_s=800, m3_s=800, m4_s=800):
@@ -112,33 +115,67 @@ class test_mov():
         self.use_pid = False
         print("Locked heading: %.1f°" % self.target_yaw)
 
-        # ToF sensors — same I2C bus, TCA on default address 0x70
+        # ToF sensors
         self.tca = adafruit_tca9548a.TCA9548A(self.i2c)
         self.tof_sensors = setup_tof_sensors(self.tca, channels=[0, 1, 2, 3])
-        self._tof_lock = threading.Lock()  # guard sensor reads across threads
+        self._executor = ThreadPoolExecutor(max_workers=4)  # one thread per sensor
 
-        self._active_direction = None  # tracks which way we're currently moving
+        # Latest distances — updated continuously by _obstacle_monitor_loop
+        # Index: [front=0, left=1, back=2, right=3]
+        self._latest_distances = [float('inf')] * 4
+        self._dist_lock = threading.Lock()
+
+        # Emergency stop flag — set by monitor thread, checked by motor thread
+        self._emergency_stop = threading.Event()
+
+        # Active movement direction (used by monitor to know which sensors matter)
+        self._active_direction = None
         self._move_thread = None
+
+        # Start the dedicated obstacle monitor thread immediately
+        self._monitor_running = True
+        self._monitor_thread = threading.Thread(
+            target=self._obstacle_monitor_loop, daemon=True
+        )
+        self._monitor_thread.start()
+        print("Obstacle monitor started.")
 
         self.command_list = ["s1","s2","s3","s4","f","b","r","l","s","tr"]
 
-    # ── ToF obstacle check ───────────────────────────────
-    def _obstacle_in_direction(self, direction):
+    # ── Dedicated obstacle monitor — runs independently, always ─────────────
+    def _obstacle_monitor_loop(self):
         """
-        Returns True if any sensor relevant to `direction` reads <= threshold.
-        Always returns False if a sensor read fails (fail-open so we don't
-        false-stop, but you can flip this to True for a fail-safe policy).
+        Runs in its own thread at full speed.
+        Reads all 4 sensors in parallel, updates _latest_distances,
+        and sets _emergency_stop if anything is too close in the active direction.
         """
-        sensor_indices = self.DIR_SENSORS.get(direction, list(range(4)))
-        with self._tof_lock:
-            readings = read_tof_sensors(self.tof_sensors)
-        for idx in sensor_indices:
-            dist = readings[idx]
-            if dist is not None and dist <= OBSTACLE_THRESHOLD_CM:
-                print(f"⚠️  Obstacle! Sensor {idx} = {dist:.1f} cm — STOPPING")
-                return True
-        return False
+        while self._monitor_running:
+            # Fire all 4 sensor reads in parallel
+            futures = [self._executor.submit(read_single_sensor, s)
+                       for s in self.tof_sensors]
+            readings = [f.result() for f in futures]  # blocks until all done
 
+            with self._dist_lock:
+                for i, r in enumerate(readings):
+                    if r is not None:
+                        self._latest_distances[i] = r
+
+            # Check if anything is blocking the current movement direction
+            direction = self._active_direction
+            if direction is not None:
+                indices = self.DIR_SENSORS.get(direction, list(range(4)))
+                for idx in indices:
+                    dist = readings[idx]
+                    if dist is not None and dist <= OBSTACLE_THRESHOLD_CM:
+                        print(f"⚠️  OBSTACLE: sensor {idx} = {dist:.1f} cm → emergency stop")
+                        self._emergency_stop.set()
+                        break
+
+            # No sleep here — run as fast as the sensors allow (limited by
+            # timing_budget=50ms, so this naturally loops ~every 50ms per sensor,
+            # but in parallel so total latency is ~50ms not 200ms)
+
+    # ── Motor send ───────────────────────────────────────────────────────────
     def send_motors(self, sp1, sp2, sp3, sp4):
         def scale(val):
             val = max(-1000, min(1000, val))
@@ -175,29 +212,33 @@ class test_mov():
         print("front: %.1f, back: %.1f, right: %.1f, left: %.1f" % (front, back, right, left))
         self.send_motors(left, front, right, back)
 
+    # ── Movement control ─────────────────────────────────────────────────────
     def _start_move(self, direction):
         self.use_pid = False
         if self._move_thread is not None:
             self._move_thread.join(timeout=0.2)
-        self._active_direction = direction
+        self._emergency_stop.clear()        # clear any previous stop
+        self._active_direction = direction  # monitor thread starts watching this direction
         self.pid.reset()
         self.use_pid = True
 
     def _stop_move(self):
         self.use_pid = False
-        self._active_direction = None
+        self._active_direction = None       # monitor stops caring about direction
+        self._emergency_stop.clear()
         self.send_motors(0, 0, 0, 0)
 
-    def _movement_loop(self, left, front, right, back, direction):
+    def _movement_loop(self, left, front, right, back):
         while self.use_pid:
-            # ── OBSTACLE CHECK (runs every loop iteration) ──
-            if self._obstacle_in_direction(direction):
+            # Check the emergency stop flag — set by the monitor thread
+            if self._emergency_stop.is_set():
+                print("Movement thread saw emergency stop — halting.")
                 self._stop_move()
-                return          # exit thread — robot is now stopped
-            # ── Normal PID-corrected move ───────────────────
+                return
             self.send_with_correction(left, front, right, back)
             time.sleep(0.05)
 
+    # ── Command handler ──────────────────────────────────────────────────────
     def take_command(self, command2):
         print("input command")
         command_components = command2.split()
@@ -236,7 +277,7 @@ class test_mov():
             self._start_move("f")
             self._move_thread = threading.Thread(
                 target=self._movement_loop,
-                args=(self.m1_speed, 0, -self.m3_speed, 0, "f"),
+                args=(self.m1_speed, 0, -self.m3_speed, 0),
                 daemon=True
             )
             self._move_thread.start()
@@ -246,7 +287,7 @@ class test_mov():
             print("back target yaw: %.1f" % self.target_yaw)
             self._move_thread = threading.Thread(
                 target=self._movement_loop,
-                args=(-1*self.m1_speed, 0, self.m3_speed, 0, "b"),
+                args=(-1*self.m1_speed, 0, self.m3_speed, 0),
                 daemon=True
             )
             self._move_thread.start()
@@ -255,7 +296,7 @@ class test_mov():
             self._start_move("r")
             self._move_thread = threading.Thread(
                 target=self._movement_loop,
-                args=(0, self.m2_speed, 0, -self.m4_speed, "r"),
+                args=(0, self.m2_speed, 0, -self.m4_speed),
                 daemon=True
             )
             self._move_thread.start()
@@ -264,28 +305,28 @@ class test_mov():
             self._start_move("l")
             self._move_thread = threading.Thread(
                 target=self._movement_loop,
-                args=(0, -self.m2_speed, 0, self.m4_speed, "l"),
+                args=(0, -self.m2_speed, 0, self.m4_speed),
                 daemon=True
             )
             self._move_thread.start()
 
         elif command == "s":
             self._stop_move()
-
         elif command == "a":
             self._start_move("a")
             self.send_with_correction(
                 left=self.m1_speed, front=self.m2_speed,
                 right=self.m3_speed, back=self.m4_speed
             )
-
         elif command == "tr":
             self.send_motors(-1*self.m1_speed, self.m2_speed, self.m3_speed, -1*self.m4_speed)
-
         else:
             print("command not recognized")
 
     def close(self):
+        self._monitor_running = False
+        self._monitor_thread.join(timeout=1)
+        self._executor.shutdown(wait=False)
         self.send_motors(0, 0, 0, 0)
         if self.ser.is_open:
             self.ser.close()
