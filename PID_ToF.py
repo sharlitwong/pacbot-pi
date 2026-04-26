@@ -320,6 +320,19 @@ class test_mov():
             )
         elif command == "tr":
             self.send_motors(-1*self.m1_speed, self.m2_speed, self.m3_speed, -1*self.m4_speed)
+        elif command == "cal":
+            print("=== Sensor Calibration Mode ===")
+            print("Wave your hand in front of each physical sensor.")
+            print("Press Ctrl+C to exit calibration.\n")
+            try:
+                while True:
+                    futures = [self._executor.submit(read_single_sensor, s)
+                               for s in self.tof_sensors]
+                    readings = [f.result() for f in futures]
+                    print(f"  [0]={readings[0]:.1f}cm  [1]={readings[1]:.1f}cm  "
+                          f"[2]={readings[2]:.1f}cm  [3]={readings[3]:.1f}cm", end="\r")
+            except KeyboardInterrupt:
+                print("\nCalibration done. Update DIR_SENSORS with correct indices.")
         else:
             print("command not recognized")
 
