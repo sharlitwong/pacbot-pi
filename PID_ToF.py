@@ -11,7 +11,7 @@ import adafruit_tca9548a
 import adafruit_vl53l4cd
 from concurrent.futures import ThreadPoolExecutor
 
-OBSTACLE_THRESHOLD_CM = 2.0
+OBSTACLE_THRESHOLD_CM = 4.0
 
 def init_imu(i2c):
     bno = BNO055_I2C(i2c)
@@ -91,10 +91,10 @@ class test_mov():
     # which sensor indices to check per direction
     # sensor order: [front=0, left=1, back=2, right=3]
     DIR_SENSORS = {
-        "f": [0],
-        "b": [2],
-        "r": [3],
-        "l": [1],
+        "f": [0],   # front
+        "b": [1],   # back
+        "r": [2],   # right
+        "l": [3],   # left
         "a": [0, 1, 2, 3],
     }
 
