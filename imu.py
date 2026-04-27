@@ -22,7 +22,7 @@ start = time.monotonic()
 while time.monotonic() - start < RECORD_SECONDS:
     try:
         yaw, roll, pitch = bno.euler
-        if None not in (yaw, roll, pitch):
+        if None not in (yaw, roll, pitch) and all(-360 <= v <= 360 for v in (yaw, roll, pitch)):
             t = time.monotonic() - start
             times.append(t)
             rolls.append(roll)
