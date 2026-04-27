@@ -15,6 +15,7 @@ import serial
 import board
 import busio
 import threading
+import numpy as np
 import matplotlib
 matplotlib.use("Agg")  # non-interactive backend — no display needed
 import matplotlib.pyplot as plt
@@ -109,7 +110,7 @@ class PID:
 class test_mov():
     PORT = "/dev/serial0"
     BAUD = 9600
-    KP, KI, KD = 0, 150, 0.0
+    KP, KI, KD = 150, 0, 0.0
     MAX_CORRECTION = 150
 
     DIR_SENSORS = {
@@ -147,7 +148,7 @@ class test_mov():
         self._active_direction = None
         self._move_thread = None
 
-        # Yaw logging — collected by a background thread
+        # Yaw logging
         self._log_times = []
         self._log_yaws  = []
         self._log_lock  = threading.Lock()
@@ -170,7 +171,6 @@ class test_mov():
 
     # ── Yaw logger ───────────────────────────────────────
     def _yaw_log_loop(self):
-        """Records yaw and timestamp every 50ms in the background."""
         while self._logging_running:
             try:
                 yaw = get_yaw(self.bno)
@@ -183,7 +183,6 @@ class test_mov():
             time.sleep(0.05)
 
     def save_plot(self):
-        """Generate and save the yaw vs time plot."""
         with self._log_lock:
             times = list(self._log_times)
             yaws  = list(self._log_yaws)
@@ -192,15 +191,16 @@ class test_mov():
             print("No yaw data to plot.")
             return
 
+        # unwrap so 359->1 plots as 359->361 instead of jumping
+        yaws_unwrapped = list(np.unwrap(yaws, period=360))
+
         fig, ax = plt.subplots(figsize=(12, 5))
-        ax.plot(times, yaws, color="tab:green", linewidth=1.2)
-        ax.set_title("Yaw vs Time")
+        ax.plot(times, yaws_unwrapped, color="tab:green", linewidth=1.2)
+        ax.set_title("Yaw vs Time (unwrapped)")
         ax.set_xlabel("Time (s)")
         ax.set_ylabel("Yaw (degrees)")
-        ax.set_ylim(0, 360)
         ax.grid(True, alpha=0.3)
 
-        # Annotate with PID coefficients in the top-right corner
         coeff_text = f"Kp = {self.pid.kp}\nKi = {self.pid.ki}\nKd = {self.pid.kd}"
         ax.text(
             0.98, 0.95, coeff_text,
@@ -421,5 +421,5 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         bot_mov.send_motors(0, 0, 0, 0)
     finally:
-        bot_mov.save_plot()  # always runs on exit, even if an error occurs
+        bot_mov.save_plot()
         bot_mov.close()
