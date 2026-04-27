@@ -12,6 +12,14 @@ CHANNELS = [0, 1, 2, 3]
 LABELS = ["Front (0)", "Back (1)", "Right (2)", "Left (3)"]
 COLORS = ["tab:blue", "tab:orange", "tab:green", "tab:red"]
 
+# Per-sensor max reliable range in cm
+MAX_RANGE = {
+    0: 60,   # front
+    1: 200,  # back
+    2: 40,   # right
+    3: 60,   # left
+}
+
 # ── Sensor init ──────────────────────────────────────────
 i2c = busio.I2C(board.SCL, board.SDA)
 tca = adafruit_tca9548a.TCA9548A(i2c)
@@ -26,7 +34,9 @@ for ch in CHANNELS:
     print(f"Sensor {ch} initialized.")
 
 # ── Record ───────────────────────────────────────────────
-times = []
+# each sensor gets its own time and distance list since they may
+# have different numbers of valid readings
+times     = [[] for _ in CHANNELS]
 distances = [[] for _ in CHANNELS]
 
 print(f"\nRecording for {RECORD_SECONDS} seconds... move objects in front of sensors now!")
@@ -37,33 +47,41 @@ while time.monotonic() - start < RECORD_SECONDS:
     remaining = RECORD_SECONDS - t
     readings = []
 
-    for sensor in sensors:
+    for i, sensor in enumerate(sensors):
         try:
             while not sensor.data_ready:
                 time.sleep(0.001)
             dist = sensor.distance
             sensor.clear_interrupt()
-            readings.append(dist)
+            if dist is not None and 0 < dist <= MAX_RANGE[i]:
+                readings.append(dist)
+            else:
+                readings.append(None)
         except Exception:
             readings.append(None)
 
-    # only record if all sensors returned valid data
-    if None not in readings and all(0 < r <= 400 for r in readings):
-        times.append(t)
+    # record each sensor independently
+    if any(r is not None for r in readings):
         for i, r in enumerate(readings):
-            distances[i].append(r)
-        print(f"[{remaining:4.1f}s left]  "
-              f"front={readings[0]:.1f}cm  "
-              f"back={readings[1]:.1f}cm  "
-              f"right={readings[2]:.1f}cm  "
-              f"left={readings[3]:.1f}cm")
+            if r is not None:
+                times[i].append(t)
+                distances[i].append(r)
+
+        # build status string, show -- for invalid readings
+        status = "  ".join(
+            f"{LABELS[i].split()[0].lower()}={readings[i]:.1f}cm"
+            if readings[i] is not None else
+            f"{LABELS[i].split()[0].lower()}=--"
+            for i in range(len(CHANNELS))
+        )
+        print(f"[{remaining:4.1f}s left]  {status}")
 
 print("Done! Saving plot...")
 
 # ── Plot ─────────────────────────────────────────────────
 fig, ax = plt.subplots(figsize=(12, 5))
 for i in range(len(CHANNELS)):
-    ax.plot(times, distances[i], label=LABELS[i], color=COLORS[i])
+    ax.plot(times[i], distances[i], label=LABELS[i], color=COLORS[i])
 
 ax.set_title(f"VL53L4CD — Distance per Sensor ({RECORD_SECONDS}s)")
 ax.set_xlabel("Time (s)")
