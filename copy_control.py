@@ -15,33 +15,70 @@ import serial
 import board
 import busio
 import threading
+import matplotlib
+matplotlib.use("Agg")  # non-interactive backend — no display needed
+import matplotlib.pyplot as plt
+from concurrent.futures import ThreadPoolExecutor
 from adafruit_bno055 import BNO055_I2C
 import adafruit_tca9548a
+import adafruit_vl53l4cd
 
-#IMU used: DOF BNO 0055
+# ── ToF config ───────────────────────────────────────────
+OBSTACLE_THRESHOLD_CM = 4.0
+
+MAX_RANGE = {
+    0: 60,   # front
+    1: 200,  # back
+    2: 40,   # right
+    3: 60,   # left
+}
+
+# ── IMU ──────────────────────────────────────────────────
 def init_imu(i2c):
-    bno = BNO055_I2C(i2c)                # channel 0
+    bno = BNO055_I2C(i2c)
     time.sleep(1)
-    return  bno
+    return bno
 
-#FOR NEW IMU
 def get_yaw(bno):
     while True:
-        heading, _, _ = bno.euler  # heading in degrees 0-360
-        # if heading is not None:
-        #     return heading
-
-        if heading is not None and -360 <= heading <= 360:  # filter garbage reads
-            return heading % 360  # normalize to 0-360
-   # except Exception as e:
-        #    print("I2C error, reinitializing...")
-         #   time.sleep(0.05)
-          #  i2c, bno = init_imu()
+        heading, _, _ = bno.euler
+        if heading is not None and -360 <= heading <= 360:
+            return heading % 360
 
 def angle_error(setpoint, current):
-    return (current - setpoint + 180) % 360 - 180 #used to be ...setpoint - current...
+    return (current - setpoint + 180) % 360 - 180
 
-# ── PID ─────────────────────────────────────────────────
+# ── ToF ──────────────────────────────────────────────────
+def setup_tof_sensors(tca, channels, timing_budget=50, inter_measurement=0):
+    sensors = []
+    for ch in channels:
+        sensor = adafruit_vl53l4cd.VL53L4CD(tca[ch])
+        sensor.timing_budget = timing_budget
+        sensor.inter_measurement = inter_measurement
+        sensor.start_ranging()
+        sensors.append(sensor)
+        print(f"ToF sensor on channel {ch} initialized.")
+    return sensors
+
+def read_single_sensor(args):
+    sensor, max_range, samples = args
+    readings = []
+    for _ in range(samples):
+        try:
+            while not sensor.data_ready:
+                time.sleep(0.001)
+            dist = sensor.distance
+            sensor.clear_interrupt()
+            if dist is not None and 0 < dist <= max_range:
+                readings.append(dist)
+        except Exception as e:
+            print(f"ToF read error: {e}")
+    if not readings:
+        return None
+    readings.sort()
+    return readings[len(readings) // 2]
+
+# ── PID ──────────────────────────────────────────────────
 class PID:
     def __init__(self, kp, ki, kd, integral_limit=50):
         self.kp = kp
@@ -58,9 +95,8 @@ class PID:
         self._last_time = None
 
     def compute(self, error):
-        now = time.monotonic() #returns current time in seconds as a float, always increasing
-        dt = 0 if self._last_time is None else now - self._last_time #small delta time
-        #integral approximation
+        now = time.monotonic()
+        dt = 0 if self._last_time is None else now - self._last_time
         self._integral = max(-self.integral_limit,
                              min(self.integral_limit, self._integral + error * dt))
         derivative = ((error - self._last_error) / dt
@@ -68,37 +104,142 @@ class PID:
         self._last_error = error
         self._last_time = now
         return self.kp * error + self.ki * self._integral + self.kd * derivative
-# ────────────────────────────────────────────────────────
 
+# ── Robot ─────────────────────────────────────────────────
 class test_mov():
     PORT = "/dev/serial0"
     BAUD = 9600
     KP, KI, KD = 150, 0, 0.0
     MAX_CORRECTION = 150
 
-    def __init__(self,i2c, m1_s=761,m2_s=800,m3_s=800,m4_s=800):
-       
-        #m4 = front
+    DIR_SENSORS = {
+        "f": [0],
+        "b": [1],
+        "r": [2],
+        "l": [3],
+        "a": [0, 1, 2, 3],
+    }
+
+    def __init__(self, i2c, m1_s=761, m2_s=800, m3_s=800, m4_s=800):
         self.ser = serial.Serial(self.PORT, self.BAUD, timeout=1)
         time.sleep(2)
-        self.i2c=i2c
-        self.m1_speed=m1_s
-        self.m2_speed=m2_s
-        self.m3_speed=m3_s
-        self.m4_speed=m4_s
+        self.i2c = i2c
+
+        self.m1_speed = m1_s
+        self.m2_speed = m2_s
+        self.m3_speed = m3_s
+        self.m4_speed = m4_s
 
         # IMU + PID
         self.bno = init_imu(self.i2c)
         self.pid = PID(self.KP, self.KI, self.KD)
         self.target_yaw = get_yaw(self.bno)
-        self.use_pid = False   # only active during movement
+        self.use_pid = False
         print("Locked heading: %.1f°" % self.target_yaw)
 
-        self.command_list=["s1","s2","s3","s4","f","b","r","l","s","tr"]
-        pass
-    
-    def send_motors(self,sp1,sp2,sp3,sp4):
-        # scale from -1000:1000 to -32767:32767
+        # ToF sensors
+        self.tca = adafruit_tca9548a.TCA9548A(self.i2c)
+        self.tof_sensors = setup_tof_sensors(self.tca, channels=[0, 1, 2, 3])
+        self._executor = ThreadPoolExecutor(max_workers=4)
+
+        # Emergency stop
+        self._emergency_stop = threading.Event()
+        self._active_direction = None
+        self._move_thread = None
+
+        # Yaw logging — collected by a background thread
+        self._log_times = []
+        self._log_yaws  = []
+        self._log_lock  = threading.Lock()
+        self._start_time = time.monotonic()
+        self._logging_running = True
+        self._log_thread = threading.Thread(
+            target=self._yaw_log_loop, daemon=True
+        )
+        self._log_thread.start()
+
+        # Obstacle monitor
+        self._monitor_running = True
+        self._monitor_thread = threading.Thread(
+            target=self._obstacle_monitor_loop, daemon=True
+        )
+        self._monitor_thread.start()
+        print("Obstacle monitor started.")
+
+        self.command_list = ["s1","s2","s3","s4","f","b","r","l","s","tr"]
+
+    # ── Yaw logger ───────────────────────────────────────
+    def _yaw_log_loop(self):
+        """Records yaw and timestamp every 50ms in the background."""
+        while self._logging_running:
+            try:
+                yaw = get_yaw(self.bno)
+                t = time.monotonic() - self._start_time
+                with self._log_lock:
+                    self._log_times.append(t)
+                    self._log_yaws.append(yaw)
+            except Exception:
+                pass
+            time.sleep(0.05)
+
+    def save_plot(self):
+        """Generate and save the yaw vs time plot."""
+        with self._log_lock:
+            times = list(self._log_times)
+            yaws  = list(self._log_yaws)
+
+        if not times:
+            print("No yaw data to plot.")
+            return
+
+        fig, ax = plt.subplots(figsize=(12, 5))
+        ax.plot(times, yaws, color="tab:green", linewidth=1.2)
+        ax.set_title("Yaw vs Time")
+        ax.set_xlabel("Time (s)")
+        ax.set_ylabel("Yaw (degrees)")
+        ax.set_ylim(0, 360)
+        ax.grid(True, alpha=0.3)
+
+        # Annotate with PID coefficients in the top-right corner
+        coeff_text = f"Kp = {self.pid.kp}\nKi = {self.pid.ki}\nKd = {self.pid.kd}"
+        ax.text(
+            0.98, 0.95, coeff_text,
+            transform=ax.transAxes,
+            fontsize=10,
+            verticalalignment="top",
+            horizontalalignment="right",
+            bbox=dict(boxstyle="round,pad=0.4", facecolor="lightyellow", alpha=0.8)
+        )
+
+        plt.tight_layout()
+        filename = f"yaw_plot_{time.strftime('%Y%m%d_%H%M%S')}.png"
+        plt.savefig(filename)
+        print(f"Plot saved to {filename}")
+
+    # ── Obstacle monitor ─────────────────────────────────
+    def _obstacle_monitor_loop(self):
+        while self._monitor_running:
+            direction = self._active_direction
+            if direction is None:
+                time.sleep(0.01)
+                continue
+
+            indices = self.DIR_SENSORS.get(direction, list(range(4)))
+            futures = {
+                idx: self._executor.submit(
+                    read_single_sensor,
+                    (self.tof_sensors[idx], MAX_RANGE[idx], 5)
+                )
+                for idx in indices
+            }
+            for idx, future in futures.items():
+                dist = future.result()
+                if dist is not None and dist <= OBSTACLE_THRESHOLD_CM:
+                    print(f"⚠️  OBSTACLE: sensor {idx} = {dist:.1f} cm → emergency stop")
+                    self._emergency_stop.set()
+
+    # ── Motor send ───────────────────────────────────────
+    def send_motors(self, sp1, sp2, sp3, sp4):
         def scale(val):
             val = max(-1000, min(1000, val))
             return int(val * 32767 / 1000)
@@ -107,138 +248,102 @@ class test_mov():
         self.ser.write(data)
         print(f"Sent {data}")
 
-    # ── PID-corrected send ───────────────────────────────
     def send_with_correction(self, left, front, right, back):
-        """
-        Apply yaw PID correction to the left/right pair.
-        Positive correction = turn right → speed up right, slow down left.
-        Motor order passed to send_motors: (left, front, right, back)
-        matching your existing convention.
-        """
         try:
             yaw = get_yaw(self.bno)
         except Exception:
-            yaw = self.target_yaw   # fall back gracefully
+            yaw = self.target_yaw
 
         error = angle_error(self.target_yaw, yaw)
-        DEADBAND = 0.1  # degrees — ignore tiny errors
+        DEADBAND = 0.1
         if abs(error) < DEADBAND:
             correction = 0.0
-            self.pid._integral = 0  # drain windup when settled
+            self.pid._integral = 0
         else:
             correction = self.pid.compute(error)
             correction = max(-self.MAX_CORRECTION, min(self.MAX_CORRECTION, correction))
-
-        # correction = self.pid.compute(error)
-        # correction = max(-self.MAX_CORRECTION, min(self.MAX_CORRECTION, correction))
-
-        # if reverse:
-        #     correction = -correction  # flip correction direction for backward movement
 
         print("Yaw: %.1f°  Error: %.1f°  Correction: %.1f" % (yaw, error, correction))
 
         if left != 0 and right != 0:
             left  += correction
-            right += correction #changed from -=
+            right += correction
         elif front != 0 and back != 0:
             front += correction
             back  += correction
-        print("front: %.1f, back: %.1f, right: %.1f, left: %.1f" % (front, back, right, left))
 
-        self.send_motors(left, front, right, back) #used to be -1*right
-        
-    # ── lock heading & reset PID on each new move ────────
-    def _start_move(self):
-        # Stop any existing movement thread first
+        print("front: %.1f, back: %.1f, right: %.1f, left: %.1f" % (front, back, right, left))
+        self.send_motors(left, front, right, back)
+
+    # ── Movement control ─────────────────────────────────
+    def _start_move(self, direction):
         self.use_pid = False
-        if hasattr(self, '_move_thread') and self._move_thread is not None:
-            self._move_thread.join(timeout=0.2)  # wait for old thread to die
-        
+        if self._move_thread is not None:
+            self._move_thread.join(timeout=0.2)
+        self._emergency_stop.clear()
+        self._active_direction = direction
         self.pid.reset()
         self.use_pid = True
 
     def _stop_move(self):
         self.use_pid = False
+        self._active_direction = None
+        self._emergency_stop.clear()
         self.send_motors(0, 0, 0, 0)
 
-    #THREADING
     def _movement_loop(self, left, front, right, back):
         while self.use_pid:
+            if self._emergency_stop.is_set():
+                print("Movement thread saw emergency stop — halting.")
+                self._stop_move()
+                return
             self.send_with_correction(left, front, right, back)
             time.sleep(0.05)
 
-    #left front right back
-    def take_command(self,command2):
+    # ── Command handler ──────────────────────────────────
+    def take_command(self, command2):
         print("input command")
-        command_components=command2.split()
-        command=command_components[0]
-        if(command == "c"):
+        command_components = command2.split()
+        command = command_components[0]
+
+        if command == "c":
             self.target_yaw = command_components[1]
             self.pid.reset()
-        elif(command=="kp"):
-            try:
-                self.pid.kp=float(command_components[1])
-                self.kp=float(command_components[1])
-            except Exception as e:
-                print(e)
-            pass
-        elif(command=="ki"):
-            try:
-                self.ki=float(command_components[1])
-                self.pid.ki=float(command_components[1])
-            except Exception as e:
-                print(e)
-            pass
-        elif(command=="kd"):
-            try:
-                self.pid.kd=float(command_components[1])
-                self.kd=float(command_components[1])
-            except Exception as e:
-                print(e)
-            pass
-        elif(command=="ph"):
-            print("getting current heading")
-            print(get_yaw(self.bno))
-            pass
-        elif(command=="sh"):
-            self.target_yaw=get_yaw(self.bno)
-            pass
-
-        elif(command=="s1"):
-            try:
-                self.m1_speed=int(command_components[1])
-            except Exception as e:
-                print(e)
-            pass
-        elif(command=="s2"):
-            try:
-                self.m2_speed=int(command_components[1])
-            except Exception as e:
-                print(e)
-            pass
-        elif(command=="s3"):
-            try:
-                self.m3_speed=int(command_components[1])
-            except Exception as e:
-                print(e)
-            pass
-        elif(command=="s4"):
-            try:
-                self.m4_speed=int(command_components[1])
-            except Exception as e:
-                print(e)
-            pass
+        elif command == "kp":
+            try: self.pid.kp = float(command_components[1])
+            except Exception as e: print(e)
+        elif command == "ki":
+            try: self.pid.ki = float(command_components[1])
+            except Exception as e: print(e)
+        elif command == "kd":
+            try: self.pid.kd = float(command_components[1])
+            except Exception as e: print(e)
+        elif command == "ph":
+            print("getting current heading:", get_yaw(self.bno))
+        elif command == "sh":
+            self.target_yaw = get_yaw(self.bno)
+        elif command == "s1":
+            try: self.m1_speed = int(command_components[1])
+            except Exception as e: print(e)
+        elif command == "s2":
+            try: self.m2_speed = int(command_components[1])
+            except Exception as e: print(e)
+        elif command == "s3":
+            try: self.m3_speed = int(command_components[1])
+            except Exception as e: print(e)
+        elif command == "s4":
+            try: self.m4_speed = int(command_components[1])
+            except Exception as e: print(e)
         elif command == "f":
-            self._start_move()
+            self._start_move("f")
             self._move_thread = threading.Thread(
                 target=self._movement_loop,
                 args=(self.m1_speed, 0, -self.m3_speed, 0),
                 daemon=True
             )
             self._move_thread.start()
-
         elif command == "b":
-            self._start_move()
+            self._start_move("b")
             print("back target yaw: %.1f" % self.target_yaw)
             self._move_thread = threading.Thread(
                 target=self._movement_loop,
@@ -246,38 +351,56 @@ class test_mov():
                 daemon=True
             )
             self._move_thread.start()
-
         elif command == "r":
-            self._start_move()
+            self._start_move("r")
             self._move_thread = threading.Thread(
                 target=self._movement_loop,
                 args=(0, self.m2_speed, 0, -self.m4_speed),
                 daemon=True
             )
             self._move_thread.start()
-
         elif command == "l":
-            self._start_move()
+            self._start_move("l")
             self._move_thread = threading.Thread(
                 target=self._movement_loop,
                 args=(0, -self.m2_speed, 0, self.m4_speed),
                 daemon=True
             )
             self._move_thread.start()
-        elif(command=="s"):
+        elif command == "s":
             self._stop_move()
-            pass
-        elif(command=="a"):
-            self._start_move()
+        elif command == "a":
+            self._start_move("a")
             self.send_with_correction(
                 left=self.m1_speed, front=self.m2_speed,
                 right=self.m3_speed, back=self.m4_speed
             )
-        elif(command=="tr"):
-            self.send_motors(-1*self.m1_speed,self.m2_speed,self.m3_speed,-1*self.m4_speed)
+        elif command == "tr":
+            self.send_motors(-1*self.m1_speed, self.m2_speed, self.m3_speed, -1*self.m4_speed)
+        elif command == "cal":
+            print("=== Sensor Calibration Mode ===")
+            print("Wave your hand in front of each physical sensor.")
+            print("Press Ctrl+C to exit calibration.\n")
+            try:
+                while True:
+                    futures = [
+                        self._executor.submit(read_single_sensor, (s, MAX_RANGE[i], 3))
+                        for i, s in enumerate(self.tof_sensors)
+                    ]
+                    readings = [f.result() for f in futures]
+                    print(f"  [0]={readings[0]}cm  [1]={readings[1]}cm  "
+                          f"[2]={readings[2]}cm  [3]={readings[3]}cm", end="\r")
+            except KeyboardInterrupt:
+                print("\nCalibration done.")
         else:
             print("command not recognized")
+
     def close(self):
+        self._logging_running = False
+        self._monitor_running = False
+        self._monitor_thread.join(timeout=1)
+        self._log_thread.join(timeout=1)
+        self._executor.shutdown(wait=False)
         self.send_motors(0, 0, 0, 0)
         if self.ser.is_open:
             self.ser.close()
@@ -286,20 +409,17 @@ class test_mov():
         except Exception:
             pass
 
+
 if __name__ == "__main__":
     i2c = busio.I2C(board.SCL, board.SDA, frequency=400000)
-    bot_mov=test_mov(i2c)
-    bot_mov.send_motors(0,0,0,0)
+    bot_mov = test_mov(i2c)
+    bot_mov.send_motors(0, 0, 0, 0)
     try:
-        while(True):
-            command=input()
+        while True:
+            command = input()
             bot_mov.take_command(command)
-
-            pass
-    except KeyboardInterrupt as e:
-        bot_mov.send_motors(0,0,0,0)
+    except KeyboardInterrupt:
+        bot_mov.send_motors(0, 0, 0, 0)
+    finally:
+        bot_mov.save_plot()  # always runs on exit, even if an error occurs
         bot_mov.close()
-        exit
-
-
-
